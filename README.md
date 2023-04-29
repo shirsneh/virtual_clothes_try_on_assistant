@@ -29,23 +29,27 @@ The user can select the cloth he/she wants to wear and then upload his/her image
 
 2.  	Cloth mask - We create a cloth mask with U2Net. 
 
-<img src="https://user-images.githubusercontent.com/84031027/235325761-4e6dfaa7-6e75-4e2a-956a-55f27ab06d95.png" width="600" height="250">
+<img src="https://user-images.githubusercontent.com/84031027/235325761-4e6dfaa7-6e75-4e2a-956a-55f27ab06d95.png" width="500" height="200">
 
 
 3.  	Body position - We get a body position estimation and key points with OpenPose.
 
-<img src="https://user-images.githubusercontent.com/84031027/235325802-be6a51e9-ba36-4dc9-be24-8ad26410d4f1.png" width="600" height="250">
+<img src="https://user-images.githubusercontent.com/84031027/235325802-be6a51e9-ba36-4dc9-be24-8ad26410d4f1.png" width="500" height="200">
 
 </p>
 
 4.  	Body segmentation - We segment the user body with U2Net.
 
-<img src="https://user-images.githubusercontent.com/84031027/235325828-228be887-f96d-4d64-97f1-27db43ba1156.png" width="600" height="250">
+<img src="https://user-images.githubusercontent.com/84031027/235325828-228be887-f96d-4d64-97f1-27db43ba1156.png" width="500" height="200">
 
 
-5.  	Generating the result - These are used to create a new image of the user wearing the requested cloth item. The image is created using ALIASGenerator.
+5.  	Generating the result - ALIASGenerator uses these to create the requested image.
 
-<img src="https://user-images.githubusercontent.com/84031027/235325853-24748a7d-3db6-47f8-8aa0-7ed0ba804328.png" width="600" height="250">
+<img src="https://user-images.githubusercontent.com/84031027/235325853-24748a7d-3db6-47f8-8aa0-7ed0ba804328.png" width="500" height="200">
+
+6.    Output - a new image of the user wearing the requested cloth item.
+
+<img src="https://user-images.githubusercontent.com/84031027/235325952-43226aa0-21bf-4a6c-b73d-8d0d643e5bd2.png" width="150" height="150">
 
 
 ## Project presentation
