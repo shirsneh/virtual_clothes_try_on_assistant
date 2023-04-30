@@ -84,9 +84,6 @@ def get_palette(num_cls):
             palette[j * 3 + 0] = 255
             palette[j * 3 + 1] = 255
             palette[j * 3 + 2] = 255
-            # palette[j * 3 + 0] |= (((lab >> 0) & 1) << (7 - i))
-            # palette[j * 3 + 1] |= (((lab >> 1) & 1) << (7 - i))
-            # palette[j * 3 + 2] |= (((lab >> 2) & 1) << (7 - i))
             i += 1
             lab >>= 3
     return palette
