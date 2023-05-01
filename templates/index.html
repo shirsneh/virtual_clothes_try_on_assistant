@@ -93,7 +93,7 @@
 
                 <div class="flex flex-wrap -m-2">
                     <div class="p-1 xl:w-1/2 md:w-1/2 w-full">
-                        <center><label class="block text-lr font-medium text-black-800"> Cloth Image </label></center>
+                        <center><label class="block text-lr font-medium text-black-800"> Clothing item's Image </label></center>
                         <div
                             class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                             <div class="space-y-1 text-center">
@@ -104,15 +104,12 @@
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 <div class="flex text-sm text-gray-600">
-                                    <!-- <label for="file-upload"
-                                        class="relative cursor-pointer rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                                        <span>Upload a file</span> -->
                                         <input class="block w-full text-sm text-slate-500
                                         file:mr-4 file:py-2 file:px-4
                                         file:rounded-full file:border-0
                                         file:text-sm file:font-semibold
                                         file:bg-violet-50 file:text-violet-700
-                                        hover:file:bg-violet-100" id="file-upload" type="file" name="cloth" class="sr-only">
+                                        hover:file:bg-violet-100" id="file-upload" type="file" name="clothing_item" class="sr-only">
                                     </label>
                                     <p class="pl-1">or drag and drop</p>
                                 </div>
@@ -159,6 +156,7 @@
                     </button>
                 </div>
             </div>
+
             <div>
                 {% if op %}
                 <center style="color: black; font-size: x-large;">YOUR RESULT:</center>

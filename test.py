@@ -148,6 +148,7 @@ def main():
     seg.cuda().eval()
     gmm.cuda().eval()
     alias.cuda().eval()
+    print("testing: opt, seg, gmm, alias")
     test(opt, seg, gmm, alias)
 
 
