@@ -12,13 +12,13 @@ def home():
     return render_template("index.html")
 
 
-@app.route("/api/transform", methods=['POST'])
+@app.route("/preds", methods=['POST'])
 def submit():
     clothing_item = request.files['clothing_item']
     model = request.files['model']
 
     ## replace the url from the ngrok url provided on the notebook on server.
-    url = " http://9869-35-198-224-9.ngrok.io/api/transform"
+    url = " http://2f7d-35-198-224-9.ngrok.io/api/transform"
     print("sending")
     response = requests.post(url=url, files={"clothing_item":clothing_item.stream, "model":model.stream})
     op = Image.open(BytesIO(response.content))
