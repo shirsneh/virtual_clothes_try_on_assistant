@@ -42,7 +42,6 @@ class preprcessInput:
 
         self.o_image = Image.open(self.save_path)
         os.remove(self.save_path)
-        # .convert('RGB')
         return np.asarray(self.o_image)
 
     def transform(self, width=768, height=1024):

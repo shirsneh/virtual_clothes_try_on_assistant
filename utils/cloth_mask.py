@@ -11,7 +11,7 @@ from model.u2net import U2NET
 
 device = 'cuda'
 
-image_dir = '/content/inputs/test/cloth'
+image_dir = '/content/inputs/test/clothing_item'
 result_dir = '/content/inputs/test/cloth-mask'
 checkpoint_path = 'cloth_segm_u2net_latest.pth'
 
