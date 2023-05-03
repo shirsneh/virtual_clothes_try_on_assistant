@@ -25,13 +25,13 @@ os.system("cd openpose && ./build/examples/openpose/openpose.bin --image_dir /co
 
 model_image = os.listdir('/content/inputs/test/image')
 print(model_image)
-clothing_item_image = os.listdir('/content/inputs/test/cloth')
+clothing_item_image = os.listdir('/content/inputs/test/clothing_item')
 print(clothing_item_image)
 pairs = zip(model_image, clothing_item_image)
 
 with open('/content/inputs/test_pairs.txt', 'w') as file:
-    for model, cloth in pairs:
-        file.write(f"{model} {cloth}")
+    for model, clothing_item in pairs:
+        file.write(f"{model} {clothing_item}")
 
 # making predictions
 os.system("python /content/virtual_clothes_try_on_assistant/test.py --name output --dataset_dir /content/inputs --checkpoint_dir /content/virtual_clothes_try_on_assistant/checkpoints --save_dir /content/")
