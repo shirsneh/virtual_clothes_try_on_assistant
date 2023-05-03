@@ -24,7 +24,7 @@ os.system("cd openpose && ./build/examples/openpose/openpose.bin --image_dir /co
 os.system("cd openpose && ./build/examples/openpose/openpose.bin --image_dir /content/inputs/test/image/ --display 0 --write_images /content/inputs/test/openpose-img/ --hand --render_pose 1 --disable_blending true")
 
 model_image = os.listdir('/content/inputs/test/image')
-print(model_image)
+print("model_image")
 clothing_item_image = os.listdir('/content/inputs/test/clothing_item')
 print("clothing_item_image")
 pairs = zip(model_image, clothing_item_image)
