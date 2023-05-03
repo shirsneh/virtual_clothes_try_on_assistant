@@ -10,11 +10,11 @@ def resize_img(path):
     im.save(path)
 
 
-for path in os.listdir('/content/inputs/test/cloth/'):
-    resize_img(f'/content/inputs/test/cloth/{path}')
+for path in os.listdir('/content/inputs/test/clothing_item/'):
+    resize_img(f'/content/inputs/test/clothing_item/{path}')
 
 os.chdir('/content/virtual_clothes_try_on_assistant')
-os.system("rm -rf /content/inputs/test/cloth/.ipynb_checkpoints")
+os.system("rm -rf /content/inputs/test/clothing_item/.ipynb_checkpoints")
 os.system("python utils/cloth_mask.py")
 os.chdir('/content')
 os.system("python /content/virtual_clothes_try_on_assistant/utils/remove_bg.py")
