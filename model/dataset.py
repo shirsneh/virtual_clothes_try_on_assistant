@@ -190,7 +190,7 @@ class VITONDataset(data.Dataset):
             'parse_agnostic': new_parse_agnostic_map,
             'pose': pose_rgb,
             'cloth': c,
-            'cloth_mask': cm,
+            'cloth-mask': cm,
         }
         return result
 
