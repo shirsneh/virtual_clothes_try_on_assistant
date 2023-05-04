@@ -69,7 +69,7 @@ def test(opt, seg, gmm, alias):
             parse_agnostic = inputs['parse_agnostic'].cuda()
             pose = inputs['pose'].cuda()
             c = inputs['cloth']['unpaired'].cuda()
-            cm = inputs['cloth_mask']['unpaired'].cuda()
+            cm = inputs['cloth-mask']['unpaired'].cuda()
 
             # Part 1. Segmentation generation
             parse_agnostic_down = F.interpolate(parse_agnostic, size=(256, 192), mode='bilinear')
