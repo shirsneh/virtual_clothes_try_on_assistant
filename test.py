@@ -68,7 +68,7 @@ def test(opt, seg, gmm, alias):
             img_agnostic = inputs['img_agnostic'].cuda()
             parse_agnostic = inputs['parse_agnostic'].cuda()
             pose = inputs['pose'].cuda()
-            c = inputs['clothing_item']['unpaired'].cuda()
+            c = inputs['cloth']['unpaired'].cuda()
             cm = inputs['cloth_mask']['unpaired'].cuda()
 
             # Part 1. Segmentation generation

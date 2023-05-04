@@ -14,13 +14,13 @@ def home():
 
 @app.route("/preds", methods=['POST'])
 def submit():
-    clothing_item = request.files['clothing_item']
+    cloth = request.files['cloth']
     model = request.files['model']
 
     ## replace the url from the ngrok url provided on the notebook on server.
-    url = "http://9838-34-73-192-129.ngrok.io/api/transform"
+    url = " http://91a1-34-73-192-129.ngrok.io/api/transform"
     print("sending")
-    response = requests.post(url=url, files={"clothing_item":clothing_item.stream, "model":model.stream})
+    response = requests.post(url=url, files={"cloth":cloth.stream, "model":model.stream})
     op = Image.open(BytesIO(response.content))
 
     buffer = BytesIO()

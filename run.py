@@ -10,11 +10,11 @@ def resize_img(path):
     im.save(path)
 
 
-for path in os.listdir('/content/inputs/test/clothing_item/'):
-    resize_img(f'/content/inputs/test/clothing_item/{path}')
+for path in os.listdir('/content/inputs/test/cloth/'):
+    resize_img(f'/content/inputs/test/cloth/{path}')
 
 os.chdir('/content/virtual_clothes_try_on_assistant')
-os.system("rm -rf /content/inputs/test/clothing_item/.ipynb_checkpoints")
+os.system("rm -rf /content/inputs/test/cloth/.ipynb_checkpoints")
 os.system("python /content/virtual_clothes_try_on_assistant/utils/cloth_mask.py")
 os.chdir('/content')
 os.system("python /content/virtual_clothes_try_on_assistant/utils/remove_bg.py")
@@ -24,12 +24,12 @@ os.system("cd openpose && ./build/examples/openpose/openpose.bin --image_dir /co
 os.system("cd openpose && ./build/examples/openpose/openpose.bin --image_dir /content/inputs/test/image/ --display 0 --write_images /content/inputs/test/openpose-image/ --hand --render_pose 1 --disable_blending true")
 
 model_image = os.listdir('/content/inputs/test/image')
-clothing_item_image = os.listdir('/content/inputs/test/clothing_item')
-pairs = zip(model_image, clothing_item_image)
+cloth_image = os.listdir('/content/inputs/test/cloth')
+pairs = zip(model_image, cloth_image)
 
 with open('/content/inputs/test_pairs.txt', 'w') as file:
-    for model, clothing_item in pairs:
-        file.write(f"{model} {clothing_item}")
+    for model, cloth in pairs:
+        file.write(f"{model} {cloth}")
 
 # making predictions
 os.system("python /content/virtual_clothes_try_on_assistant/test.py --name output --dataset_dir /content/inputs --checkpoint_dir /content/virtual_clothes_try_on_assistant/checkpoints --save_dir /content/output")
