@@ -3,7 +3,7 @@
 
 ## The Problem:
 
-How many times did you buy a clothing item online, got really exited and then got super disappointed when it arrived, and it didn't fit as well as you imagined?
+How many times did you buy a clothing item online, got really excited and then got super disappointed when it arrived, and it didn't fit as well as you imagined?
 
 Unfortunately - While buying clothes online, it is difficult for a customer to select a desirable outfit in the first attempt because they can’t try on clothes before they are delivered physically.
 
@@ -19,7 +19,7 @@ It's never been easier to look fabulous!!!
 
 I created a Virtual clothing assistant using Deep learning algorithms in order to help the consumers.
 
-The user can select the cloth he/she wants to wear and then upload his/her image of any pose they want, and the assistant will help to dress that human with his/her selected cloth.
+The user can select the clothing item he/she wants to wear and then upload his/her image of any pose they want, and the assistant will help to dress that human with his/her selected clothing item.
 
 
 *So how exactly does it work?*
@@ -47,7 +47,8 @@ The user can select the cloth he/she wants to wear and then upload his/her image
 
 <img src="https://user-images.githubusercontent.com/84031027/235325853-24748a7d-3db6-47f8-8aa0-7ed0ba804328.png" width="500" height="200">
 
-6.    Output - a new image of the user wearing the requested cloth item.
+6.    Output - a new image of the user wearing the requested 
+item.
 
 <img src="https://user-images.githubusercontent.com/84031027/235325952-43226aa0-21bf-4a6c-b73d-8d0d643e5bd2.png" width="150" height="150">
 
