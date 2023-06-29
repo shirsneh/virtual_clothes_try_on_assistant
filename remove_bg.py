@@ -16,8 +16,8 @@ class preprcessInput:
         self.t_image = None
         self.save_path = None
 
-    def remove_bg(self, file_path:str, api_key='DdN1NDyJjr8VmQUBG7VRGhSk'):
-        self.save_path = file_path[:-3]+'.png'
+    def remove_bg(self, file_path: str, api_key='DdN1NDyJjr8VmQUBG7VRGhSk'):
+        self.save_path = file_path[:-3] + '.png'
         response = requests.post(
             'https://api.remove.bg/v1.0/removebg',
             files={'image_file': open(file_path, 'rb')},
@@ -65,8 +65,8 @@ class preprcessInput:
 # USAGE OF THE CLASS
 preprocess = preprcessInput()
 for images in os.listdir('/content/inputs/test/image'):
-  print(images)
-  if images[-3:] == 'jpg':
-    print('yo')
-    op = preprocess.remove_bg(r'/content/inputs/test/image/'+images)
-    arr = preprocess.transform(768, 1024)
+    print(images)
+    if images[-3:] == 'jpg':
+        print('yo')
+        op = preprocess.remove_bg(r'/content/inputs/test/image/' + images)
+        arr = preprocess.transform(768, 1024)
