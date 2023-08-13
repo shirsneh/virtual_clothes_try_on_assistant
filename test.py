@@ -6,7 +6,7 @@ from torch import nn
 from torch.nn import functional as F
 import torchgeometry as tgm
 
-from model.dataset import VITONDataset, VITONDataLoader
+from datasets import VITONDataset, VITONDataLoader
 from model.network import SegGenerator, GMM, ALIASGenerator
 from utils import gen_noise, load_checkpoint, save_images
 

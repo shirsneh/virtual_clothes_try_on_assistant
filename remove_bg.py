@@ -37,7 +37,6 @@ class preprcessInput:
             with open(self.save_path, 'wb') as out:
                 out.write(response.content)
         else:
-            # raise("Error:", response.status_code, response.text)
             print(response.status_code)
 
         self.o_image = Image.open(self.save_path)
@@ -62,7 +61,6 @@ class preprcessInput:
         return np.asarray(background.convert('RGB'))
 
 
-# USAGE OF THE CLASS
 preprocess = preprcessInput()
 for images in os.listdir('/content/inputs/test/image'):
     print(images)
