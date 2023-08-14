@@ -7,7 +7,7 @@ import torch
 import torch.nn.functional as F
 import torchvision.transforms as transforms
 
-from model.u2net import U2NET
+from networks.u2net import U2NET
 
 device = 'cuda'
 
@@ -18,7 +18,7 @@ checkpoint_path = 'cloth_segm_u2net_latest.pth'
 
 def load_checkpoint_mgpu(model, checkpoint_path):
     if not os.path.exists(checkpoint_path):
-        print("----No checkpoints at given path----")
+        print("Error: no checkpoints at given path")
         return
     model_state_dict = torch.load(checkpoint_path, map_location=torch.device("cpu"))
     new_state_dict = OrderedDict()
@@ -27,13 +27,12 @@ def load_checkpoint_mgpu(model, checkpoint_path):
         new_state_dict[name] = v
 
     model.load_state_dict(new_state_dict)
-    print("----checkpoints loaded from path: {}----".format(checkpoint_path))
+    print("checkpoints loaded from path: {}".format(checkpoint_path))
     return model
 
 
 class Normalize_image(object):
     """Normalize given tensor into given mean and standard dev
-
     Args:
         mean (float): Desired mean to substract from tensors
         std (float): Desired std to divide from tensors
@@ -62,7 +61,7 @@ class Normalize_image(object):
             return self.normalize_18(image_tensor)
 
         else:
-            assert "Please set proper channels! Normlization implemented only for 1, 3 and 18"
+            assert "Please set proper channels! Normalization implemented only for 1, 3 and 18"
 
 
 def get_palette(num_cls):
