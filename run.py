@@ -22,10 +22,10 @@ print("after remove_bg")
 os.system(
     "python3 /content/Self-Correction-Human-Parsing/simple_extractor.py --dataset 'lip' --networks-restore '/content/Self-Correction-Human-Parsing/checkpoints/final.pth' --input-dir '/content/inputs/test/image' --output-dir '/content/inputs/test/image-parse'")
 os.chdir('/content')
-# os.system(
-#     "cd openpose && ./build/examples/openpose/openpose.bin --image_dir /content/inputs/test/image/ --display 0 --render_pose 0 --hand --write_json '/content/inputs/test/openpose-json/'")
-# os.system(
-#     "cd openpose && ./build/examples/openpose/openpose.bin --image_dir /content/inputs/test/image/ --display 0 --hand --render_pose 1 --disable_blending true --write_images '/content/inputs/test/openpose-img/'")
+os.system(
+    "cd openpose && ./build/examples/openpose/openpose.bin --image_dir /content/inputs/test/image/ --display 0 --render_pose 0 --hand --write_json '/content/inputs/test/openpose-json/'")
+os.system(
+    "cd openpose && ./build/examples/openpose/openpose.bin --image_dir /content/inputs/test/image/ --display 0 --hand --render_pose 1 --disable_blending true --write_images '/content/inputs/test/openpose-img/'")
 
 model_image = os.listdir('/content/inputs/test/image')
 cloth_image = os.listdir('/content/inputs/test/cloth')
@@ -38,5 +38,5 @@ with open('/content/inputs/test_pairs.txt', 'w') as file:
 # making predictions
 os.system(
     "python /content/virtual_clothes_try_on_assistant/test.py --name output --dataset_dir /content/inputs --checkpoint_dir /content/virtual_clothes_try_on_assistant/checkpoints --save_dir /content/")
-# os.system("rm -rf /content/inputs")
-# os.system("rm -rf /content/output/.ipynb_checkpoints")
+os.system("rm -rf /content/inputs")
+os.system("rm -rf /content/output/.ipynb_checkpoints")

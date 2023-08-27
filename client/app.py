@@ -4,6 +4,9 @@ import requests
 from io import BytesIO
 import base64
 
+import tempfile
+import os
+
 app = Flask(__name__)
 
 
@@ -18,7 +21,7 @@ def submit():
     model = request.files['model']
 
     ## replace the url from the ngrok url provided on the notebook on server.
-    url = "  http://c715-34-141-202-2.ngrok-free.app/api/transform"
+    url = "http://2acd-34-90-241-149.ngrok-free.app/api/transform"
     print("sending")
     response = requests.post(url=url, files={"cloth": cloth.stream, "model": model.stream})
     op = Image.open(BytesIO(response.content))
@@ -29,6 +32,19 @@ def submit():
 
     data = buffer.read()
     data = base64.b64encode(data).decode()
+    print(data)
+
+    temp_dir = tempfile.mkdtemp()
+    image_path = os.path.join(temp_dir, 'output.png')
+
+    # Decode the base64 data and save it as an image
+    decoded_image_data = base64.b64decode(data)
+    with open(image_path, 'wb') as image_file:
+        image_file.write(decoded_image_data)
+
+    # Open the image using the default image viewer
+    Image.open(image_path).show()
+
     return render_template('index.html', op=data)
 
 

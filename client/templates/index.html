@@ -12,7 +12,7 @@
         <div>
             <div class="inline-flex container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
                 <a class="flex title-font font-medium text-center justify-center items-center text-white mb-4 md:mb-0">
-                    <center> <img src="{{url_for('static', filename='images/logo.png')}}" height="300" width="300" style="border-radius: 20%;"/> </center>
+                    <div style="text-align: center;"> <img src="{{url_for('static', filename='images/logo.png')}}" height="300" width="300" style="border-radius: 20%;"/> </div>
                 </a>
             </div>
         <div  class="text-center mb-20">
@@ -96,7 +96,7 @@
 
                 <div class="flex flex-wrap -m-2">
                     <div class="p-1 xl:w-1/2 md:w-1/2 w-full">
-                        <center><label class="block text-lr font-medium text-black-800"> Clothing item's Image </label></center>
+                        <div style="text-align: center;"><label class="block text-lr font-medium text-black-800"> Clothing item's Image </label></div>
                         <div
                             class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-md" style="border-color: #c66c3c;">
                             <div class="space-y-1 text-center">
@@ -122,7 +122,7 @@
 
                     </div>
                     <div class="p-1 xl:w-1/2 md:w-1/2 w-full">
-                        <center> <label class="block text-lr font-medium text-black-800"> Model Image </label></center>
+                        <div style="text-align: center;"> <label class="block text-lr font-medium text-black-800"> Model Image </label></div>
                         <div
                             class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-md" style="border-color: #c66c3c;">
                             <div class="space-y-1 text-center">
@@ -158,17 +158,15 @@
                 </div>
                 <div>
                     <br>
-                    <center> <img src="{{url_for('static', filename='images/fitting-room-gonna-try-it-on.gif')}}" height="300" width="300"/> </center>
+                    <div style="text-align: center;"> <img src="{{url_for('static', filename='images/fitting-room-gonna-try-it-on.gif')}}" height="300" width="300"/> </div>
                 </div>
             <div>
                 {% if op %}
-                <center style="color: black; font-size: x-large;">YOUR RESULT:</center>
-                <center>
+                <div style="color: black; font-size: x-large; text-align: center;">YOUR RESULT:</div>
                     <div class="sm: w-3/4 mb-10 lg:mb-0 rounded-lg overflow-hidden">
-                        <img alt="output" class="object-cover object-center h-2/4 w-2/4"
+                        <img alt="output" class="object-cover object-center h-1/2 w-1/2"
                             src="data:image/png;base64,{{ op }}">
                     </div>
-                </center>
                 {% endif %}
             </div>
         </form>
