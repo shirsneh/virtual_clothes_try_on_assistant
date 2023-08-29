@@ -1,4 +1,7 @@
+import json
+import cv2
 from PIL import Image
+import mediapipe as mp
 import os
 
 
@@ -22,10 +25,31 @@ print("after remove_bg")
 os.system(
     "python3 /content/Self-Correction-Human-Parsing/simple_extractor.py --dataset 'lip' --networks-restore '/content/Self-Correction-Human-Parsing/checkpoints/final.pth' --input-dir '/content/inputs/test/image' --output-dir '/content/inputs/test/image-parse'")
 os.chdir('/content')
-os.system(
-    "cd openpose && ./build/examples/openpose/openpose.bin --image_dir /content/inputs/test/image/ --display 0 --render_pose 0 --hand --write_json '/content/inputs/test/openpose-json/'")
-os.system(
-    "cd openpose && ./build/examples/openpose/openpose.bin --image_dir /content/inputs/test/image/ --display 0 --hand --render_pose 1 --disable_blending true --write_images '/content/inputs/test/openpose-img/'")
+
+mp_pose = mp.solutions.pose
+pose = mp_pose.Pose(static_image_mode=True, min_detection_confidence=0.5)
+for image_path in os.listdir('/content/inputs/test/image/'):
+    image = cv2.imread(os.path.join('/content/inputs/test/image/', image_path))
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    results = pose.process(image_rgb)
+    keypoints = results.pose_landmarks
+    # Save JSON
+    json_path = os.path.join('/content/inputs/test/media_pipe_json/', image_path.replace('.jpg', '.json'))
+    with open(json_path, 'w') as json_file:
+        json.dump(keypoints, json_file)
+    # Save image with pose landmarks
+    annotated_image = image.copy()
+    mp_drawing = mp.solutions.drawing_utils
+    mp_drawing.draw_landmarks(annotated_image, keypoints, mp_pose.POSE_CONNECTIONS)
+    img_path = os.path.join('/content/inputs/test/media_pipe_img/', image_path.replace('.jpg', '_pose.jpg'))
+    cv2.imwrite(img_path, annotated_image)
+# Clean up
+pose.close()
+
+# os.system(
+#     "cd openpose && ./build/examples/openpose/openpose.bin --image_dir /content/inputs/test/image/ --display 0 --render_pose 0 --hand --write_json '/content/inputs/test/openpose-json/'")
+# os.system(
+#     "cd openpose && ./build/examples/openpose/openpose.bin --image_dir /content/inputs/test/image/ --display 0 --hand --render_pose 1 --disable_blending true --write_images '/content/inputs/test/openpose-img/'")
 
 model_image = os.listdir('/content/inputs/test/image')
 cloth_image = os.listdir('/content/inputs/test/cloth')
