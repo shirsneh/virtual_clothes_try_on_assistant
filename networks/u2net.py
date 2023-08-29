@@ -112,7 +112,7 @@ class RSU7(nn.Module):  # UNet07DRES(nn.Module):
 
 
 ### RSU-6 ###
-class RSU6(nn.Module):  # UNet06DRES(nn.Module):
+class RSU6(nn.Module):
     def __init__(self, in_ch=3, mid_ch=12, out_ch=3):
         super(RSU6, self).__init__()
 
