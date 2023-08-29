@@ -33,10 +33,19 @@ for image_path in os.listdir('/content/inputs/test/image/'):
     image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     results = pose.process(image_rgb)
     keypoints = results.pose_landmarks
+    # Convert keypoints to a serializable format
+    serializable_keypoints = []
+    if keypoints:
+        for landmark in keypoints.landmark:
+            serializable_keypoints.append({
+                "x": landmark.x,
+                "y": landmark.y,
+                "z": landmark.z,
+            })
     # Save JSON
     json_path = os.path.join('/content/inputs/test/mediapipe_json/', image_path.replace('.jpg', '.json'))
     with open(json_path, 'w') as json_file:
-        json.dump(keypoints, json_file)
+        json.dump(serializable_keypoints, json_file)
     # Save image with pose landmarks
     annotated_image = image.copy()
     mp_drawing = mp.solutions.drawing_utils
