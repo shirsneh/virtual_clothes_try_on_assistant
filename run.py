@@ -34,14 +34,14 @@ for image_path in os.listdir('/content/inputs/test/image/'):
     results = pose.process(image_rgb)
     keypoints = results.pose_landmarks
     # Save JSON
-    json_path = os.path.join('/content/inputs/test/media_pipe_json/', image_path.replace('.jpg', '.json'))
+    json_path = os.path.join('/content/inputs/test/mediapipe_json/', image_path.replace('.jpg', '.json'))
     with open(json_path, 'w') as json_file:
         json.dump(keypoints, json_file)
     # Save image with pose landmarks
     annotated_image = image.copy()
     mp_drawing = mp.solutions.drawing_utils
     mp_drawing.draw_landmarks(annotated_image, keypoints, mp_pose.POSE_CONNECTIONS)
-    img_path = os.path.join('/content/inputs/test/media_pipe_img/', image_path.replace('.jpg', '_pose.jpg'))
+    img_path = os.path.join('/content/inputs/test/mediapipe_img/', image_path.replace('.jpg', '_pose.jpg'))
     cv2.imwrite(img_path, annotated_image)
 # Clean up
 pose.close()
