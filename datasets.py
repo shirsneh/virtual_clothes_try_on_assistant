@@ -139,12 +139,15 @@ class VITONDataset(data.Dataset):
         pose_rgb = transforms.Resize(self.load_width, interpolation=2)(pose_rgb)
         pose_rgb = self.transform(pose_rgb)  # [-1,1]
 
+        # Load the pose JSON data
         pose_name = img_name.replace('.jpg', '.json')
         with open(osp.join(self.data_path, 'mediapipe_json', pose_name), 'r') as f:
-            pose_label = json.load(f)
-            pose_data = pose_label['people'][0]['pose_keypoints_2d']
-            pose_data = np.array(pose_data)
-            pose_data = pose_data.reshape((-1, 3))[:, :2]
+            pose_data_list = json.load(f)
+        pose_data_dict = pose_data_list[0]
+        pose_data = np.array([
+            [pose_data_dict['x'], pose_data_dict['y'], pose_data_dict['z']]
+        ])
+        pose_data = pose_data.reshape((-1, 3))[:, :2]
 
         # load parsing image
         parse_name = img_name.replace('.jpg', '.png')
@@ -176,7 +179,7 @@ class VITONDataset(data.Dataset):
                 new_parse_agnostic_map[i] += parse_agnostic_map[label]
 
         # load person image
-        img = Image.open(osp.join(self.data_path, 'client/image', img_name))
+        img = Image.open(osp.join(self.data_path, 'image', img_name))
         img = transforms.Resize(self.load_width, interpolation=2)(img)
         img_agnostic = self.get_img_agnostic(img, parse, pose_data)
         img = self.transform(img)
