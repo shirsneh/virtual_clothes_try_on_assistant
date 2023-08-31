@@ -49,7 +49,7 @@ class VITONDataset(data.Dataset):
             mask_arm_draw = ImageDraw.Draw(mask_arm)
             i_prev = pose_ids[0]
             for i in pose_ids[1:]:
-                if np.all(pose_data == 0.0):
+                if pose_data[i_prev, 0] == 0.0 and pose_data[i_prev, 1] == 0.0:
                     continue
                 print(pose_data[i_prev,i])
                 mask_arm_draw.line([tuple(pose_data[i_prev * 2:i_prev * 2 + 2]), tuple(pose_data[i * 2:i * 2 + 2])], 'white', width=r * 10)
