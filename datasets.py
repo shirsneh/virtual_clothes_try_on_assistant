@@ -51,7 +51,8 @@ class VITONDataset(data.Dataset):
             for i in pose_ids[1:]:
                 if np.all(pose_data == 0.0):
                     continue
-                mask_arm_draw.line([tuple(pose_data[j * 2:j * 2 + 2]) for j in [i_prev, i]], 'white', width=r * 10)
+                print(pose_data[i_prev,i])
+                mask_arm_draw.line([tuple(pose_data[i_prev * 2:i_prev * 2 + 2]), tuple(pose_data[i * 2:i * 2 + 2])], 'white', width=r * 10)
                 pointx, pointy = pose_data[i * 2:i * 2 + 2]
                 radius = r * 4 if i == pose_ids[-1] else r * 15
                 mask_arm_draw.ellipse((pointx - radius, pointy - radius, pointx + radius, pointy + radius), 'white',
