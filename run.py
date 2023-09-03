@@ -39,11 +39,8 @@ os.makedirs(openpose_json_dir, exist_ok=True)
 for image_path in os.listdir(input_image_dir):
     image = cv2.imread(os.path.join(input_image_dir, image_path))
     image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    image_21_channels = np.zeros((image_rgb.shape[0], image_rgb.shape[1], 21))
-    image_21_channels[:, :, :3] = image_rgb
-    results = pose.process(image_21_channels)
+    results = pose.process(image_rgb)
     keypoints = results.pose_landmarks
-
     openpose_data = {
         "version": 1.0,
         "people": []
@@ -57,11 +54,8 @@ for image_path in os.listdir(input_image_dir):
             x = landmark.x
             y = landmark.y
             confidence = landmark.z  # Use the z-coordinate as confidence
-            # Append the keypoints to the person data
             person_data["pose_keypoints_2d"].extend([x, y, confidence])
-        # Append the person data to the OpenPose data
         openpose_data["people"].append(person_data)
-        # Create a JSON filename that matches OpenPose format
         json_filename = image_path.replace('.jpg', '.json')
         json_path = os.path.join(openpose_json_dir, json_filename)
         with open(json_path, 'w') as json_file:
@@ -72,6 +66,12 @@ for image_path in os.listdir(input_image_dir):
     img_path = os.path.join(mediapipe_img_dir, image_path.replace('.jpg', '_pose.jpg'))
     cv2.imwrite(img_path, annotated_image)
 pose.close()
+
+for image_path in os.listdir(input_image_dir):
+    image = cv2.imread(os.path.join(input_image_dir, image_path))
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    image_21_channels = np.zeros((image_rgb.shape[0], image_rgb.shape[1], 21))
+    image_21_channels[:, :, :3] = image_rgb
 
 # os.system(
 #     "cd openpose && ./build/examples/openpose/openpose.bin --image_dir /content/inputs/test/image/ --display 0 --render_pose 0 --hand --write_json '/content/inputs/test/openpose-json/'")
