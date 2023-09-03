@@ -176,7 +176,7 @@ class VITONDataset(data.Dataset):
                 new_parse_agnostic_map[i] += parse_agnostic_map[label]
 
         # load person image
-        img = Image.open(osp.join(self.data_path, 'client/image', img_name))
+        img = Image.open(osp.join(self.data_path, 'image', img_name))
         img = transforms.Resize(self.load_width, interpolation=2)(img)
         img_agnostic = self.get_img_agnostic(img, parse, pose_data)
         img = self.transform(img)
