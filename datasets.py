@@ -122,7 +122,7 @@ class VITONDataset(data.Dataset):
         cm = {}
         for key in self.c_names:
             c_name[key] = self.c_names[key][index]
-            c[key] = Image.open(osp.join(self.data_path, 'client/cloth', c_name[key])).convert('RGB')
+            c[key] = Image.open(osp.join(self.data_path, 'cloth', c_name[key])).convert('RGB')
             c[key] = transforms.Resize(self.load_width, interpolation=2)(c[key])
             cm[key] = Image.open(osp.join(self.data_path, 'cloth-mask', c_name[key]))
             cm[key] = transforms.Resize(self.load_width, interpolation=0)(cm[key])
@@ -134,13 +134,13 @@ class VITONDataset(data.Dataset):
             cm[key].unsqueeze_(0)
 
         # load pose image
-        pose_name = img_name.replace('.jpg', '_rendered.png')
-        pose_rgb = Image.open(osp.join(self.data_path, 'openpose-img', pose_name))
+        pose_name = img_name.replace('.jpg', '_pose.png')
+        pose_rgb = Image.open(osp.join(self.data_path, 'mediapipe_img', pose_name))
         pose_rgb = transforms.Resize(self.load_width, interpolation=2)(pose_rgb)
         pose_rgb = self.transform(pose_rgb)  # [-1,1]
 
-        pose_name = img_name.replace('.jpg', '_keypoints.json')
-        with open(osp.join(self.data_path, 'openpose-json', pose_name), 'r') as f:
+        # pose_name = img_name.replace('.jpg', '_keypoints.json')
+        with open(osp.join(self.data_path, 'openpose_json', pose_name), 'r') as f:
             pose_label = json.load(f)
             pose_data = pose_label['people'][0]['pose_keypoints_2d']
             pose_data = np.array(pose_data)
