@@ -39,10 +39,11 @@ os.makedirs(openpose_json_dir, exist_ok=True)
 for image_path in os.listdir(input_image_dir):
     image = cv2.imread(os.path.join(input_image_dir, image_path))
     image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    image_with_dummy_channels = np.zeros((image_rgb.shape[0], image_rgb.shape[1], 21))
-    image_with_dummy_channels[:, :, :18] = image_rgb  # Copy the 18 channels
-    results = pose.process(image_with_dummy_channels)
+    image_21_channels = np.zeros((image_rgb.shape[0], image_rgb.shape[1], 21))
+    image_21_channels[:, :, :3] = image_rgb
+    results = pose.process(image_21_channels)
     keypoints = results.pose_landmarks
+
     openpose_data = {
         "version": 1.0,
         "people": []
@@ -55,8 +56,10 @@ for image_path in os.listdir(input_image_dir):
         for landmark in keypoints.landmark:
             x = landmark.x
             y = landmark.y
-            confidence = landmark.z
+            confidence = landmark.z  # Use the z-coordinate as confidence
+            # Append the keypoints to the person data
             person_data["pose_keypoints_2d"].extend([x, y, confidence])
+        # Append the person data to the OpenPose data
         openpose_data["people"].append(person_data)
         # Create a JSON filename that matches OpenPose format
         json_filename = image_path.replace('.jpg', '.json')
