@@ -134,7 +134,7 @@ class VITONDataset(data.Dataset):
             cm[key].unsqueeze_(0)
 
         # load pose image
-        pose_name = img_name.replace('.jpg', '_pose.png')
+        pose_name = img_name.replace('.jpg', '_pose.jpg')
         pose_rgb = Image.open(osp.join(self.data_path, 'mediapipe_img', pose_name))
         pose_rgb = transforms.Resize(self.load_width, interpolation=2)(pose_rgb)
         pose_rgb = self.transform(pose_rgb)  # [-1,1]
