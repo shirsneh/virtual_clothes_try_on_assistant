@@ -57,6 +57,7 @@ for image_path in os.listdir(input_image_dir):
             person_data["pose_keypoints_2d"].extend([x, y, confidence])
         # Append the person data to the OpenPose data
         openpose_data["people"].append(person_data)
+        # Create a JSON filename that matches OpenPose format
         json_filename = image_path.replace('.jpg', '.json')
         json_path = os.path.join(openpose_json_dir, json_filename)
         with open(json_path, 'w') as json_file:
