@@ -49,14 +49,12 @@ class VITONDataset(data.Dataset):
             mask_arm_draw = ImageDraw.Draw(mask_arm)
             i_prev = pose_ids[0]
             for i in pose_ids[1:]:
-                if pose_data[i_prev, 0] == 0.0 and pose_data[i_prev, 1] == 0.0:
+                if (pose_data[i_prev, 0] == 0.0 and pose_data[i_prev, 1] == 0.0) or (pose_data[i, 0] == 0.0 and pose_data[i, 1] == 0.0):
                     continue
-                print(pose_data[i_prev,i])
-                mask_arm_draw.line([tuple(pose_data[i_prev * 2:i_prev * 2 + 2]), tuple(pose_data[i * 2:i * 2 + 2])], 'white', width=r * 10)
-                pointx, pointy = pose_data[i * 2:i * 2 + 2]
-                radius = r * 4 if i == pose_ids[-1] else r * 15
-                mask_arm_draw.ellipse((pointx - radius, pointy - radius, pointx + radius, pointy + radius), 'white',
-                                      'white')
+                mask_arm_draw.line([tuple(pose_data[j]) for j in [i_prev, i]], 'white', width=r*10)
+                pointx, pointy = pose_data[i]
+                radius = r*4 if i == pose_ids[-1] else r*15
+                mask_arm_draw.ellipse((pointx-radius, pointy-radius, pointx+radius, pointy+radius), 'white', 'white')
                 i_prev = i
             parse_arm = (np.array(mask_arm) / 255) * (parse_array == parse_id).astype(np.float32)
             agnostic.paste(0, None, Image.fromarray(np.uint8(parse_arm * 255), 'L'))
@@ -64,7 +62,6 @@ class VITONDataset(data.Dataset):
         # mask torso & neck
         agnostic.paste(0, None, Image.fromarray(np.uint8(parse_upper * 255), 'L'))
         agnostic.paste(0, None, Image.fromarray(np.uint8(parse_neck * 255), 'L'))
-
 
         return agnostic
 
@@ -125,7 +122,7 @@ class VITONDataset(data.Dataset):
         cm = {}
         for key in self.c_names:
             c_name[key] = self.c_names[key][index]
-            c[key] = Image.open(osp.join(self.data_path, 'cloth', c_name[key])).convert('RGB')
+            c[key] = Image.open(osp.join(self.data_path, 'client/cloth', c_name[key])).convert('RGB')
             c[key] = transforms.Resize(self.load_width, interpolation=2)(c[key])
             cm[key] = Image.open(osp.join(self.data_path, 'cloth-mask', c_name[key]))
             cm[key] = transforms.Resize(self.load_width, interpolation=0)(cm[key])
@@ -137,20 +134,17 @@ class VITONDataset(data.Dataset):
             cm[key].unsqueeze_(0)
 
         # load pose image
-        pose_name = img_name.replace('.jpg', '_pose.jpg')
-        pose_rgb = Image.open(osp.join(self.data_path, 'mediapipe_img', pose_name))
+        pose_name = img_name.replace('.jpg', '_rendered.png')
+        pose_rgb = Image.open(osp.join(self.data_path, 'openpose-img', pose_name))
         pose_rgb = transforms.Resize(self.load_width, interpolation=2)(pose_rgb)
         pose_rgb = self.transform(pose_rgb)  # [-1,1]
 
-        # Load the pose JSON data
-        pose_name = img_name.replace('.jpg', '.json')
-        with open(osp.join(self.data_path, 'mediapipe_json', pose_name), 'r') as f:
-            pose_data_list = json.load(f)
-        pose_data_dict = pose_data_list[0]
-        pose_data = np.array([
-            [pose_data_dict['x'], pose_data_dict['y'], pose_data_dict['z']]
-        ])
-        pose_data = pose_data.reshape((-1, 3))[:, :2]
+        pose_name = img_name.replace('.jpg', '_keypoints.json')
+        with open(osp.join(self.data_path, 'openpose-json', pose_name), 'r') as f:
+            pose_label = json.load(f)
+            pose_data = pose_label['people'][0]['pose_keypoints_2d']
+            pose_data = np.array(pose_data)
+            pose_data = pose_data.reshape((-1, 3))[:, :2]
 
         # load parsing image
         parse_name = img_name.replace('.jpg', '.png')
@@ -182,7 +176,7 @@ class VITONDataset(data.Dataset):
                 new_parse_agnostic_map[i] += parse_agnostic_map[label]
 
         # load person image
-        img = Image.open(osp.join(self.data_path, 'image', img_name))
+        img = Image.open(osp.join(self.data_path, 'client/image', img_name))
         img = transforms.Resize(self.load_width, interpolation=2)(img)
         img_agnostic = self.get_img_agnostic(img, parse, pose_data)
         img = self.transform(img)

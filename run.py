@@ -30,31 +30,42 @@ os.chdir('/content')
 
 mp_pose = mp.solutions.pose
 pose = mp_pose.Pose(static_image_mode=True, min_detection_confidence=0.5)
-for image_path in os.listdir('/content/inputs/test/image/'):
-    image = cv2.imread(os.path.join('/content/inputs/test/image/', image_path))
+input_image_dir = '/content/inputs/test/image/'
+mediapipe_json_dir = '/content/inputs/test/mediapipe_json/'
+mediapipe_img_dir = '/content/inputs/test/mediapipe_img/'
+openpose_json_dir = '/content/inputs/test/openpose_json/'
+os.makedirs(openpose_json_dir, exist_ok=True)
+for image_path in os.listdir(input_image_dir):
+    image = cv2.imread(os.path.join(input_image_dir, image_path))
     image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     results = pose.process(image_rgb)
     keypoints = results.pose_landmarks
-    # Convert keypoints to a serializable format
-    serializable_keypoints = []
+    openpose_data = {
+        "version": 1.0,
+        "people": []
+    }
     if keypoints:
+        person_data = {
+            "person_id": 1,
+            "pose_keypoints_2d": []
+        }
         for landmark in keypoints.landmark:
-            serializable_keypoints.append({
-                "x": landmark.x,
-                "y": landmark.y,
-                "z": landmark.z,
-            })
-    # Save JSON
-    json_path = os.path.join('/content/inputs/test/mediapipe_json/', image_path.replace('.jpg', '.json'))
-    with open(json_path, 'w') as json_file:
-        json.dump(serializable_keypoints, json_file)
-    # Save image with pose landmarks
+            x = landmark.x
+            y = landmark.y
+            confidence = landmark.z  # Use the z-coordinate as confidence
+            # Append the keypoints to the person data
+            person_data["pose_keypoints_2d"].extend([x, y, confidence])
+        # Append the person data to the OpenPose data
+        openpose_data["people"].append(person_data)
+        json_filename = image_path.replace('.jpg', '.json')
+        json_path = os.path.join(openpose_json_dir, json_filename)
+        with open(json_path, 'w') as json_file:
+            json.dump(openpose_data, json_file)
     annotated_image = image.copy()
     mp_drawing = mp.solutions.drawing_utils
     mp_drawing.draw_landmarks(annotated_image, keypoints, mp_pose.POSE_CONNECTIONS)
-    img_path = os.path.join('/content/inputs/test/mediapipe_img/', image_path.replace('.jpg', '_pose.jpg'))
+    img_path = os.path.join(mediapipe_img_dir, image_path.replace('.jpg', '_pose.jpg'))
     cv2.imwrite(img_path, annotated_image)
-# Clean up
 pose.close()
 
 # os.system(
