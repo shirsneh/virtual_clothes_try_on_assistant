@@ -133,7 +133,6 @@ def test(opt, seg, gmm, alias):
 
 def main():
     opt = get_opt()
-    print(opt)
 
     if not os.path.exists(os.path.join(opt.save_dir, opt.name)):
         os.makedirs(os.path.join(opt.save_dir, opt.name))
