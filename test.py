@@ -19,7 +19,7 @@ def get_opt():
     parser.add_argument('-j', '--workers', type=int, default=1)
     parser.add_argument('--load_height', type=int, default=1024)
     parser.add_argument('--load_width', type=int, default=768)
-    parser.add_argument('--shuffle', action='store_true')
+    parser.add_argument('--shuffle', action='store_true', default=True)
 
     parser.add_argument('--dataset_dir', type=str, default='./datasets/')
     parser.add_argument('--dataset_mode', type=str, default='test')

@@ -202,7 +202,6 @@ class VITONDataLoader:
     def __init__(self, opt, dataset):
         super(VITONDataLoader, self).__init__()
 
-        print(opt.shuffle)
         if opt.shuffle:
             train_sampler = data.sampler.RandomSampler(dataset)
             print("opt.shuffle is not none")
