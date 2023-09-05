@@ -5,7 +5,7 @@
 
 How many times did you buy a clothing item online, got really excited and then got super disappointed when it arrived, and it didn't fit as well as you imagined?
 
-Unfortunately - While buying clothes online, it is difficult for a customer to select a desirable outfit in the first attempt because they can’t try on clothes before they are delivered physically.
+Unfortunately - Online clothes shopping can be tricky because you can't try things on before they arrive, which can lead to disappointment if the fit or style isn't what you expected.
 
 
 ## The Solution:
