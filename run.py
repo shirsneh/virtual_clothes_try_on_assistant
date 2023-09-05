@@ -24,9 +24,7 @@ os.chdir('/content')
 os.system("python /content/virtual_clothes_try_on_assistant/remove_bg.py")
 print("after remove_bg")
 os.system(
-    "python3 /content/Self-Correction-Human-Parsing/simple_extractor.py --dataset 'lip' --model-restore "
-    "'/content/Self-Correction-Human-Parsing/checkpoints/final.pth' --input-dir '/content/inputs/test/image' "
-    "--output-dir '/content/inputs/test/image-parse'")
+    "python3 /content/Self-Correction-Human-Parsing/simple_extractor.py --dataset 'lip' --model-restore '/content/Self-Correction-Human-Parsing/checkpoints/final.pth' --input-dir '/content/inputs/test/image' --output-dir '/content/inputs/test/image-parse'")
 os.chdir('/content')
 
 mp_pose = mp.solutions.pose
@@ -79,7 +77,12 @@ for image_path in os.listdir(input_image_dir):
 #     "cd openpose && ./build/examples/openpose/openpose.bin --image_dir /content/inputs/test/image/ --display 0 --hand --render_pose 1 --disable_blending true --write_images '/content/inputs/test/openpose-img/'")
 
 model_image = os.listdir('/content/inputs/test/image')
+if os.path.exists(model_image):
+    print(f"The directory '{model_image}' exists.")
+else:
+    print(f"The directory '{model_image}' does not exist.")
 cloth_image = os.listdir('/content/inputs/test/cloth')
+
 pairs = zip(model_image, cloth_image)
 
 with open('/content/inputs/test_pairs.txt', 'w') as file:

@@ -64,6 +64,6 @@ class preprcessInput:
 preprocess = preprcessInput()
 for images in os.listdir('/content/inputs/test/image'):
     if images[-3:] == 'jpg':
-        print(images)
+        print("images are:" + images)
         op = preprocess.remove_bg(r'/content/inputs/test/image/' + images)
         arr = preprocess.transform(768, 1024)
