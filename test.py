@@ -58,7 +58,10 @@ def test(opt, seg, gmm, alias):
     gauss.cuda()
 
     test_dataset = VITONDataset(opt)
-    print("VITONDataset loaded")
+    if(test_dataset is None or len(test_dataset)==0):
+        print("error in loading test_dataset")
+    else:
+        print("VITONDataset loaded")
     test_loader = VITONDataLoader(opt, test_dataset)
     print("after VITONDataloader")
 
@@ -78,7 +81,6 @@ def test(opt, seg, gmm, alias):
             pose_down = F.interpolate(pose, size=(256, 192), mode='bilinear')
             c_masked_down = F.interpolate(c * cm, size=(256, 192), mode='bilinear')
             cm_down = F.interpolate(cm, size=(256, 192), mode='bilinear')
-            seg_input = torch.cat((cm_down, c_masked_down, parse_agnostic_down, gen_noise(cm_down.size()).cuda()), dim=1)
             seg_input = torch.cat((cm_down, c_masked_down, parse_agnostic_down, pose_down, gen_noise(cm_down.size()).cuda()), dim=1)
 
             parse_pred_down = seg(seg_input)
