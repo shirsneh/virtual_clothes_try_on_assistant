@@ -19,7 +19,7 @@ def get_opt():
     parser.add_argument('-j', '--workers', type=int, default=1)
     parser.add_argument('--load_height', type=int, default=1024)
     parser.add_argument('--load_width', type=int, default=768)
-    parser.add_argument('--shuffle', action='store_true', default=True)
+    parser.add_argument('--shuffle', action='store_true')
 
     parser.add_argument('--dataset_dir', type=str, default='./datasets/')
     parser.add_argument('--dataset_mode', type=str, default='test')
@@ -58,7 +58,9 @@ def test(opt, seg, gmm, alias):
     gauss.cuda()
 
     test_dataset = VITONDataset(opt)
+    print("VITONDataset loaded")
     test_loader = VITONDataLoader(opt, test_dataset)
+    print("after VITONDataloader")
 
     with torch.no_grad():
         for i, inputs in enumerate(test_loader.data_loader):
@@ -67,17 +69,17 @@ def test(opt, seg, gmm, alias):
 
             img_agnostic = inputs['img_agnostic'].cuda()
             parse_agnostic = inputs['parse_agnostic'].cuda()
-            # pose = inputs['pose'].cuda()
+            pose = inputs['pose'].cuda()
             c = inputs['cloth']['unpaired'].cuda()
             cm = inputs['cloth-mask']['unpaired'].cuda()
 
             # Part 1. Segmentation generation
             parse_agnostic_down = F.interpolate(parse_agnostic, size=(256, 192), mode='bilinear')
-            # pose_down = F.interpolate(pose, size=(256, 192), mode='bilinear')
+            pose_down = F.interpolate(pose, size=(256, 192), mode='bilinear')
             c_masked_down = F.interpolate(c * cm, size=(256, 192), mode='bilinear')
             cm_down = F.interpolate(cm, size=(256, 192), mode='bilinear')
             seg_input = torch.cat((cm_down, c_masked_down, parse_agnostic_down, gen_noise(cm_down.size()).cuda()), dim=1)
-            # seg_input = torch.cat((cm_down, c_masked_down, parse_agnostic_down, pose_down, gen_noise(cm_down.size()).cuda()), dim=1)
+            seg_input = torch.cat((cm_down, c_masked_down, parse_agnostic_down, pose_down, gen_noise(cm_down.size()).cuda()), dim=1)
 
             parse_pred_down = seg(seg_input)
             parse_pred = gauss(up(parse_pred_down))
@@ -100,26 +102,26 @@ def test(opt, seg, gmm, alias):
                 for label in labels[j][1]:
                     parse[:, j] += parse_old[:, label]
 
+            print("after Segmentation generation")
+
             # Part 2. Clothes Deformation
             agnostic_gmm = F.interpolate(img_agnostic, size=(256, 192), mode='nearest')
             parse_cloth_gmm = F.interpolate(parse[:, 2:3], size=(256, 192), mode='nearest')
-            # pose_gmm = F.interpolate(pose, size=(256, 192), mode='nearest')
+            pose_gmm = F.interpolate(pose, size=(256, 192), mode='nearest')
             c_gmm = F.interpolate(c, size=(256, 192), mode='nearest')
-            gmm_input = torch.cat((parse_cloth_gmm, agnostic_gmm), dim=1)
-            # gmm_input = torch.cat((parse_cloth_gmm, pose_gmm, agnostic_gmm), dim=1)
+            gmm_input = torch.cat((parse_cloth_gmm, pose_gmm, agnostic_gmm), dim=1)
 
             _, warped_grid = gmm(gmm_input, c_gmm)
             warped_c = F.grid_sample(c, warped_grid, padding_mode='border')
             warped_cm = F.grid_sample(cm, warped_grid, padding_mode='border')
+            print("after Clothes Deformation")
 
             # Part 3. Try-on synthesis
             misalign_mask = parse[:, 2:3] - warped_cm
             misalign_mask[misalign_mask < 0.0] = 0.0
             parse_div = torch.cat((parse, misalign_mask), dim=1)
             parse_div[:, 2:3] -= misalign_mask
-
-            output = alias(torch.cat((img_agnostic, warped_c), dim=1), parse, parse_div, misalign_mask)
-            # output = alias(torch.cat((img_agnostic, pose, warped_c), dim=1), parse, parse_div, misalign_mask)
+            output = alias(torch.cat((img_agnostic, pose, warped_c), dim=1), parse, parse_div, misalign_mask)
 
             unpaired_names = []
             for img_name, c_name in zip(img_names, c_names):
@@ -129,7 +131,7 @@ def test(opt, seg, gmm, alias):
 
             if (i + 1) % opt.display_freq == 0:
                 print("step: {}".format(i + 1))
-
+            print("after Try-on synthesis")
 
 def main():
     opt = get_opt()
@@ -151,6 +153,7 @@ def main():
     gmm.cuda().eval()
     alias.cuda().eval()
     test(opt, seg, gmm, alias)
+    print("finished testing")
 
 
 if __name__ == '__main__':
