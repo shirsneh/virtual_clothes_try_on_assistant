@@ -1,5 +1,18 @@
 <img src="https://user-images.githubusercontent.com/84031027/235169420-40efb062-281d-47a5-b4c5-0e07b14aab5b.png" width="250" height="250">
 
+## Contents:
+1. Problem definition
+2. Solution definition
+3. Approach definition and the protocol
+4. Usage instructions
+5. Explanation about U2NET
+6. Explanation about Mediapipe
+7. Explanation about Self-Correction-Human-Parsing
+8. Explanation about SegGenerator
+9. Explanation about ALIASGenerator
+10. Project presentation
+11. Resources
+
 
 ## The Problem:
 
@@ -49,15 +62,32 @@ The user can select the clothing item he/she wants to wear and then upload his/h
 <img src="https://github.com/shirsneh/virtual_clothes_try_on_assistant/assets/84031027/b8e9d64d-eea1-4f60-86aa-53ee4cf7b2d6" width="500" height="200">
 
 
-5.    Body segmentation -
-6.  	Generating the result - ALIASGenerator uses these to create the requested image.
+5.     Body segmentation - We segment the user body with SegGenerator.
+  
+6.     Generating the result - ALIASGenerator uses these to create the requested image.(unfinished)
+  
+7.     Output - a new image of the user wearing the requested item. (unfinished)
 
-<img src="https://user-images.githubusercontent.com/84031027/235325853-24748a7d-3db6-47f8-8aa0-7ed0ba804328.png" width="500" height="200">
 
-6.    Output - a new image of the user wearing the requested item.
+## Usage instructions
 
-<img src="https://user-images.githubusercontent.com/84031027/235325952-43226aa0-21bf-4a6c-b73d-8d0d643e5bd2.png" width="150" height="150">
+1.    Make an account on ngrok and apply for an API key: https://ngrok.com/
+  
+2.    Replace the API key inside Demo.ipynb:
+   <img src="https://github.com/shirsneh/virtual_clothes_try_on_assistant/assets/84031027/6876c9cd-26d7-41fb-904b-7d1c832fe413" width="800" height="150">
+ 
+3.    Run the Demo.ipynb and you'll get the link of your server:
+   <img src="https://github.com/shirsneh/virtual_clothes_try_on_assistant/assets/84031027/340a14da-387d-44c8-8711-ac7bf0985e30" width="700" height="100">
+   
+4.    Copy the link to client/app.py:
+   <img src="https://github.com/shirsneh/virtual_clothes_try_on_assistant/assets/84031027/75092656-61de-4221-8dfb-03a01951a0eb" width="800" height="150">
 
+5.    Run client/app.py and you'll get the link of the client flask app:
+   <img src="https://github.com/shirsneh/virtual_clothes_try_on_assistant/assets/84031027/3603cc3b-8647-490c-93ef-2f18b58deb55" width="700" height="100">
+
+6. Click on the link and enjoy 😊
+
+   
 ## Explanation about U2NET
 
 A neural network architecture which is designed for image segmentation tasks. 
@@ -66,7 +96,7 @@ A neural network architecture which is designed for image segmentation tasks.
 
 
 
-A brief explanation of the code:
+A brief explanation of my code:
 
 •	*REBNCONV class:* This is a basic building block of the network, consisting of a convolutional layer followed by batch normalization and ReLU activation.
 
@@ -91,11 +121,15 @@ Overall, U2Net and U2NetP are deep neural networks for semantic segmentation tas
 <img src="https://github.com/shirsneh/virtual_clothes_try_on_assistant/assets/84031027/de3d21bd-7984-4c9e-82d0-d42633a48907" width="500" height="200">
 
 
-#### Based on a paper titled "U2-Net: Going Deeper with Nested U-Structure for Salient Object Detection" by Qin et al. in 2020. 
+#### My implementation is based on a paper titled "U2-Net: Going Deeper with Nested U-Structure for Salient Object Detection" by Qin et al. in 2020. 
 Link to the paper:  https://www.sciencedirect.com/science/article/abs/pii/S0031320320302077
 
-#### Was trained with VITON-HD dataset
+#### and was trained with VITON-HD dataset
 Link to the dataset: https://github.com/shadow2496/VITON-HD/tree/main
+
+#### You can see the code here: 
+https://github.com/shirsneh/virtual_clothes_try_on_assistant/blob/main/networks/u2net.py
+
 
 ## Explanation about Mediapipe
 
@@ -116,7 +150,7 @@ Link for Mediapipe: https://developers.google.com/mediapipe/solutions
 
 ## Explanation about Self-Correction-Human-Parsing
 
-semantic segmentation of human body parts or clothing in images using a deep neural network. It provides flexibility in choosing the dataset, specifying input and output directories, and optionally saving logits for further analysis. 
+A parsing of human body parts or clothing in images using a deep neural network. It provides flexibility in choosing the dataset, specifying input and output directories, and optionally saving logits for further analysis. 
 
 Link for Self-Correction-Human-Parsing: https://github.com/GoGoDuck912/Self-Correction-Human-Parsing
 
@@ -129,6 +163,49 @@ Link for Self-Correction-Human-Parsing: https://github.com/GoGoDuck912/Self-Corr
 <img src="https://github.com/shirsneh/virtual_clothes_try_on_assistant/assets/84031027/f19c2cd3-f504-4e62-8d0f-dac3214e2eba" width="500" height="200">
 
 <img src="https://github.com/shirsneh/virtual_clothes_try_on_assistant/assets/84031027/4e461912-fea4-4bfd-9ae4-698d3400b18b" width="500" height="200">
+
+
+## Explanation about SegGenerator
+
+Semantic segmentation pipeline designed for human parsing. Its primary function is to process input data and produce a detailed segmentation map that identifies various human body parts and clothing items.
+
+A brief explanation of my code:
+
+•	*Network Architecture:* The segmentation generator consists of several convolutional layers (conv1 to conv9) interleaved with normalization and activation functions. Each convolutional layer extracts and refines features from the input image. Max-pooling and upsampling layers are used to control the spatial resolution of feature maps. The generator's architecture progressively reduces spatial dimensions and then increases them to produce the final segmentation map. The final layer applies the sigmoid activation function to map the network's output to the range [0,1].
+
+•	*Forward Pass:* The forward method defines the forward pass of the generator. It takes the input image x and passes it through the network layers. Each convolutional layer is followed by an activation function (ReLU) and normalization. Max-pooling and upsampling layers are used to adjust the spatial resolution of feature maps at different stages. The final output is obtained after applying the sigmoid activation to produce the segmentation map.
+
+
+#### My implementation is based on a paper titled "VITON-HD: High-Resolution Virtual Try-On via Misalignment-Aware Normalization" by Choi,Park,Lee and Choo in 2021. 
+Link to the paper: https://arxiv.org/pdf/2103.16874.pdf
+
+#### and was trained with VITON-HD dataset
+Link to the dataset: https://github.com/shadow2496/VITON-HD/tree/main
+
+#### You can see the code here: 
+https://github.com/shirsneh/virtual_clothes_try_on_assistant/blob/main/network.py
+
+## Explanation about ALIASGenerator
+
+The main generator network for image synthesis. a crucial component of an image generation system that takes into account segmentation information to produce images with specific attributes and characteristics. It involves normalization, conditioning, and upsampling to generate high-quality output images.
+
+A brief explanation of my code:
+
+•	*ALIASNorm*: This is a module that performs normalization and conditioning on image data. It supports parameter-free normalization types such as batch, instance, and custom "mask" normalization. The module applies normalization to input data, taking into account segmentation information. It also incorporates noise into the input data. Affine parameters (gamma and beta) are produced based on the segmentation map and applied to the normalized input.
+
+•	*ALIASResBlock*: defines a residual block used in the ALIAS generator. It contains convolutional layers and normalization operations. Residual connections are used to improve gradient flow during training. Segmentation information and misalignment masks are considered during normalization.
+
+•	*ALIASGenerator*: This is the core generator module for generating images. It comprises multiple components, including convolutional layers and residual blocks. The generator takes input data, segmentation maps, segmentation diversity maps, and misalignment masks. It progressively upsamples and refines the input data to produce an output image. The generator architecture is flexible, with the number of upsampling layers determined by the specified configuration.
+
+
+#### My implementation is based on a paper titled "VITON-HD: High-Resolution Virtual Try-On via Misalignment-Aware Normalization" by Choi,Park,Lee and Choo in 2021. 
+Link to the paper: https://arxiv.org/pdf/2103.16874.pdf
+
+#### and was trained with VITON-HD dataset
+Link to the dataset: https://github.com/shadow2496/VITON-HD/tree/main
+
+#### You can see the code here: 
+https://github.com/shirsneh/virtual_clothes_try_on_assistant/blob/main/network.py
 
 
 ## Project presentation
@@ -146,4 +223,7 @@ https://www.sciencedirect.com/science/article/abs/pii/S0031320320302077
 Mediapipe - https://developers.google.com/mediapipe/solutions
 
 Self-Correction-Human-Parsing - https://github.com/GoGoDuck912/Self-Correction-Human-Parsing
+
+SegGenerator and ALIASGenerator - "VITON-HD: High-Resolution Virtual Try-On via Misalignment-Aware Normalization" by Choi,Park,Lee and Choo in 2021.
+https://arxiv.org/pdf/2103.16874.pdf
 
