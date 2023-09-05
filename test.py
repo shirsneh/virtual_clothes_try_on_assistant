@@ -142,6 +142,7 @@ def main():
         os.makedirs(os.path.join(opt.save_dir, opt.name))
 
     seg = SegGenerator(opt, input_nc=opt.semantic_nc + 8, output_nc=opt.semantic_nc)
+    print(seg)
     gmm = GMM(opt, inputA_nc=7, inputB_nc=3)
     opt.semantic_nc = 7
     alias = ALIASGenerator(opt, input_nc=9)
