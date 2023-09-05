@@ -77,10 +77,6 @@ for image_path in os.listdir(input_image_dir):
 #     "cd openpose && ./build/examples/openpose/openpose.bin --image_dir /content/inputs/test/image/ --display 0 --hand --render_pose 1 --disable_blending true --write_images '/content/inputs/test/openpose-img/'")
 
 model_image = os.listdir('/content/inputs/test/image')
-if os.path.exists(model_image):
-    print(f"The directory '{model_image}' exists.")
-else:
-    print(f"The directory '{model_image}' does not exist.")
 cloth_image = os.listdir('/content/inputs/test/cloth')
 
 pairs = zip(model_image, cloth_image)
