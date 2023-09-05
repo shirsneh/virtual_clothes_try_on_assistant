@@ -56,6 +56,7 @@ class VITONDataset(data.Dataset):
                 radius = r*4 if i == pose_ids[-1] else r*15
                 mask_arm_draw.ellipse((pointx-radius, pointy-radius, pointx+radius, pointy+radius), 'white', 'white')
                 i_prev = i
+            mask_arm = np.resize(mask_arm, parse_array.shape)
             parse_arm = (np.array(mask_arm) / 255) * (parse_array == parse_id).astype(np.float32)
             agnostic.paste(0, None, Image.fromarray(np.uint8(parse_arm * 255), 'L'))
 
