@@ -210,7 +210,7 @@ https://github.com/shirsneh/virtual_clothes_try_on_assistant/blob/main/network.p
 
 ## Project presentation
 
-[project presentation.pptx](https://github.com/shirsneh/virtual_clothes_try_on_assistant/files/11360128/project.presentation.pptx)
+[project presentation.pptx](https://github.com/shirsneh/virtual_clothes_try_on_assistant/blob/main/project%20presentation.pptx)
 
 
 ## Resources
