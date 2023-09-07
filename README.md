@@ -125,7 +125,7 @@ Overall, U2Net and U2NetP are deep neural networks for semantic segmentation tas
 Link to the paper:  https://www.sciencedirect.com/science/article/abs/pii/S0031320320302077
 
 #### and was trained with VITON-HD dataset
-Link to the dataset: https://github.com/shadow2496/VITON-HD/tree/main
+Link to the dataset: https://github.com/shadow2496/VITON-HD
 
 #### You can see the code here: 
 https://github.com/shirsneh/virtual_clothes_try_on_assistant/blob/main/networks/u2net.py
@@ -180,7 +180,7 @@ A brief explanation of my code:
 Link to the paper: https://arxiv.org/pdf/2103.16874.pdf
 
 #### and was trained with VITON-HD dataset
-Link to the dataset: https://github.com/shadow2496/VITON-HD/tree/main
+Link to the dataset: https://github.com/shadow2496/VITON-HD
 
 #### You can see the code here: 
 https://github.com/shirsneh/virtual_clothes_try_on_assistant/blob/main/network.py
@@ -202,7 +202,7 @@ A brief explanation of my code:
 Link to the paper: https://arxiv.org/pdf/2103.16874.pdf
 
 #### and was trained with VITON-HD dataset
-Link to the dataset: https://github.com/shadow2496/VITON-HD/tree/main
+Link to the dataset: https://github.com/shadow2496/VITON-HD
 
 #### You can see the code here: 
 https://github.com/shirsneh/virtual_clothes_try_on_assistant/blob/main/network.py
@@ -210,12 +210,12 @@ https://github.com/shirsneh/virtual_clothes_try_on_assistant/blob/main/network.p
 
 ## Project presentation
 
-[project presentation.pptx](https://github.com/shirsneh/virtual_clothes_try_on_assistant/files/11360128/project.presentation.pptx)
+[project presentation.pptx](https://github.com/shirsneh/virtual_clothes_try_on_assistant/blob/main/project%20presentation.pptx)
 
 
 ## Resources
 
-VITON-HD Dataset - https://paperswithcode.com/dataset/viton-hd
+VITON-HD Dataset - https://github.com/shadow2496/VITON-HD
 
 U2Net - "U2-Net: Going Deeper with Nested U-Structure for Salient Object Detection" by Qin et al. in 2020.  
 https://www.sciencedirect.com/science/article/abs/pii/S0031320320302077
