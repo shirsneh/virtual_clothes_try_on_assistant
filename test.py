@@ -1,6 +1,7 @@
 import argparse
+import cv2
+import numpy as np
 import os
-
 import torch
 from torch import nn
 from torch.nn import functional as F
@@ -103,6 +104,12 @@ def test(opt, seg, gmm, alias):
             for j in range(len(labels)):
                 for label in labels[j][1]:
                     parse[:, j] += parse_old[:, label]
+
+            # Save or display the segmentation mask images
+            for i in range(parse_pred.size(0)):
+                parse_pred_np = parse_pred[i].cpu().numpy().astype(np.uint8)
+                save_path = os.path.join(opt.save_dir, f'seg_mask_{i}.png')
+                cv2.imwrite(save_path, parse_pred_np)
 
             print("after Segmentation generation")
 
