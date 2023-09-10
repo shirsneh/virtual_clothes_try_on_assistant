@@ -26,8 +26,7 @@ def get_opt():
     parser.add_argument('--dataset_mode', type=str, default='test')
     parser.add_argument('--dataset_list', type=str, default='test_pairs.txt')
     parser.add_argument('--checkpoint_dir', type=str, default='/content/drive/MyDrive/VITON-HD/checkpoints')
-    parser.add_argument('--save_dir', type=str, default='./results/')
-    parser.add_argument('--save_seg_dir', type=str, default='/content/inputs/test/image_seg/')
+    parser.add_argument('--save_dir', type=str, default='/content/inputs/test/image_seg/')
 
     parser.add_argument('--display_freq', type=int, default=1)
 
@@ -115,10 +114,9 @@ def test(opt, seg, gmm, alias):
             # Save or display the segmentation mask images
             for i in range(parse_pred.size(0)):
                 parse_pred_np = parse_pred[i].cpu().numpy().astype(np.uint8)
-                save_path = os.path.join(opt.save_dir, f'seg_mask_{i}.png')
+                save_path = os.path.join(opt.save_dir, f'seg_mask_{i}.jpg')
                 cv2.imwrite(save_path, parse_pred_np)
 
-            print_results(opt, parse_pred)
             print("after Segmentation generation")
 
             # Part 2. Clothes Deformation
@@ -156,17 +154,6 @@ def test(opt, seg, gmm, alias):
                 print("step: {}".format(i + 1))
             print("after Try-on synthesis")
 
-# Save or display the segmentation mask images
-def print_results(opt, parse_pred):
-    # Create a directory to save segmentation mask images
-    if not os.path.exists(opt.save_seg_dir):
-        os.makedirs(opt.save_seg_dir)
-
-    for i in range(parse_pred.size(0)):
-        parse_pred_np = parse_pred[i].cpu().numpy().astype(np.uint8)
-        save_seg_path = os.path.join(opt.save_seg_dir, f'seg_mask_{i}.png')
-        cv2.imwrite(save_seg_path, parse_pred_np)
-        print(f'Saved segmentation mask {i} to {save_seg_path}')
 
 def main():
     opt = get_opt()
