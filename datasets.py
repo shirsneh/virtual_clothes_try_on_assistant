@@ -171,10 +171,7 @@ class VITONDataset(data.Dataset):
         }
         parse_agnostic_map = torch.zeros(20, self.load_height, self.load_width, dtype=torch.float)
         # Resize parse_agnostic to match parse_agnostic_map shape
-        parse_agnostic_resized = torch.nn.functional.interpolate(parse_agnostic.unsqueeze(0).float(),
-                                                                 size=(self.load_height, self.load_width),
-                                                                 mode='nearest').long()
-
+        parse_agnostic_resized = torch.nn.functional.interpolate(parse_agnostic.unsqueeze(0).float(), size=(self.load_height, self.load_width), mode='nearest').squeeze(0).long()
         # Now scatter the resized parse_agnostic tensor
         parse_agnostic_map.scatter_(0, parse_agnostic_resized, 1.0)
         new_parse_agnostic_map = torch.zeros(self.semantic_nc, self.load_height, self.load_width, dtype=torch.float)
