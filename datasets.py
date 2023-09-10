@@ -170,7 +170,13 @@ class VITONDataset(data.Dataset):
             12: ['noise', [3, 11]]
         }
         parse_agnostic_map = torch.zeros(20, self.load_height, self.load_width, dtype=torch.float)
-        parse_agnostic_map.scatter_(0, parse_agnostic, 1.0)
+        # Resize parse_agnostic to match parse_agnostic_map shape
+        parse_agnostic_resized = torch.nn.functional.interpolate(parse_agnostic.unsqueeze(0).float(),
+                                                                 size=(self.load_height, self.load_width),
+                                                                 mode='nearest').long()
+
+        # Now scatter the resized parse_agnostic tensor
+        parse_agnostic_map.scatter_(0, parse_agnostic_resized, 1.0)
         new_parse_agnostic_map = torch.zeros(self.semantic_nc, self.load_height, self.load_width, dtype=torch.float)
         for i in range(len(labels)):
             for label in labels[i][1]:
