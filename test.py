@@ -27,6 +27,7 @@ def get_opt():
     parser.add_argument('--dataset_list', type=str, default='test_pairs.txt')
     parser.add_argument('--checkpoint_dir', type=str, default='/content/drive/MyDrive/VITON-HD/checkpoints')
     parser.add_argument('--save_dir', type=str, default='./results/')
+    parser.add_argument('--save_seg_dir', type=str, default='./image_seg/')
 
     parser.add_argument('--display_freq', type=int, default=1)
 
@@ -111,6 +112,7 @@ def test(opt, seg, gmm, alias):
                 save_path = os.path.join(opt.save_dir, f'seg_mask_{i}.png')
                 cv2.imwrite(save_path, parse_pred_np)
 
+            print_results(opt, parse_pred)
             print("after Segmentation generation")
 
             # Part 2. Clothes Deformation
@@ -142,14 +144,25 @@ def test(opt, seg, gmm, alias):
                 print("step: {}".format(i + 1))
             print("after Try-on synthesis")
 
+# Save or display the segmentation mask images
+def print_results(opt, parse_pred):
+    for i in range(parse_pred.size(0)):
+        parse_pred_np = parse_pred[i].cpu().numpy().astype(np.uint8)
+        save_path = os.path.join(opt.save_seg_dir, f'seg_mask_{i}.png')
+        cv2.imwrite(save_path, parse_pred_np)
+        print(f'Saved segmentation mask {i} to {save_path}')
+
 def main():
     opt = get_opt()
 
     if not os.path.exists(os.path.join(opt.save_dir, opt.name)):
         os.makedirs(os.path.join(opt.save_dir, opt.name))
 
+    # Create a directory to save segmentation mask images
+    if not os.path.exists(opt.save_seg_dir):
+        os.makedirs(opt.save_seg_dir)
+
     seg = SegGenerator(opt, input_nc=opt.semantic_nc + 8, output_nc=opt.semantic_nc)
-    print(seg)
     gmm = GMM(opt, inputA_nc=7, inputB_nc=3)
     opt.semantic_nc = 7
     alias = ALIASGenerator(opt, input_nc=9)
