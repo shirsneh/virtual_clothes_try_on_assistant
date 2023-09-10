@@ -27,7 +27,7 @@ def get_opt():
     parser.add_argument('--dataset_list', type=str, default='test_pairs.txt')
     parser.add_argument('--checkpoint_dir', type=str, default='/content/drive/MyDrive/VITON-HD/checkpoints')
     parser.add_argument('--save_dir', type=str, default='./results/')
-    parser.add_argument('--save_seg_dir', type=str, default='./image_seg/')
+    parser.add_argument('--save_seg_dir', type=str, default='/content/image_seg/')
 
     parser.add_argument('--display_freq', type=int, default=1)
 
@@ -132,17 +132,8 @@ def test(opt, seg, gmm, alias):
             misalign_mask[misalign_mask < 0.0] = 0.0
             parse_div = torch.cat((parse, misalign_mask), dim=1)
             parse_div[:, 2:3] -= misalign_mask
-            print("parse: ")
-            print(parse.size())
-            print("\nparse_div: ")
-            print(parse_div.size())
-            print("\nmisalign_mask: ")
-            print(misalign_mask.size())
-            print("\nimg_agnostic: ")
-            print(img_agnostic.size())
-            print("\nwarped_c: ")
-            print(warped_c)
-            output = alias(torch.cat((img_agnostic, pose, warped_c), dim=1), parse, parse_div, misalign_mask)
+            img_agnostic_resized = F.interpolate(img_agnostic, size=(1024, 768), mode='bilinear', align_corners=False)
+            output = alias(torch.cat((img_agnostic_resized, pose, warped_c), dim=1), parse, parse_div, misalign_mask)
 
             unpaired_names = []
             for img_name, c_name in zip(img_names, c_names):
