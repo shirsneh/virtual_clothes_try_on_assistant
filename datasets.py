@@ -208,10 +208,8 @@ class VITONDataLoader:
 
         if opt.shuffle:
             train_sampler = data.sampler.RandomSampler(dataset)
-            print("opt.shuffle is not none")
         else:
             train_sampler = None
-            print("opt.shuffle is none ")
 
         self.data_loader = data.DataLoader(
                 dataset, batch_size=opt.batch_size, shuffle=(train_sampler is None),

@@ -27,7 +27,7 @@ def get_opt():
     parser.add_argument('--dataset_list', type=str, default='test_pairs.txt')
     parser.add_argument('--checkpoint_dir', type=str, default='/content/drive/MyDrive/VITON-HD/checkpoints')
     parser.add_argument('--save_dir', type=str, default='./results/')
-    parser.add_argument('--save_seg_dir', type=str, default='/content/image_seg/')
+    parser.add_argument('--save_seg_dir', type=str, default='/content/inputs/test/image_seg/')
 
     parser.add_argument('--display_freq', type=int, default=1)
 
@@ -65,7 +65,11 @@ def test(opt, seg, gmm, alias):
     else:
         print("VITONDataset loaded")
     test_loader = VITONDataLoader(opt, test_dataset)
-    print("after VITONDataloader")
+    if (test_loader is None or len(test_loader) == 0):
+        print("error in loading test_loader")
+    else:
+        print("after VITONDataloader")
+
 
     with torch.no_grad():
         for i, inputs in enumerate(test_loader.data_loader):
