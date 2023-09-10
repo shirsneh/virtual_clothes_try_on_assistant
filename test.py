@@ -161,10 +161,6 @@ def main():
     if not os.path.exists(os.path.join(opt.save_dir, opt.name)):
         os.makedirs(os.path.join(opt.save_dir, opt.name))
 
-    # Create a directory to save segmentation mask images
-    if not os.path.exists(opt.save_seg_dir):
-        os.makedirs(opt.save_seg_dir)
-
     seg = SegGenerator(opt, input_nc=opt.semantic_nc + 8, output_nc=opt.semantic_nc)
     gmm = GMM(opt, inputA_nc=7, inputB_nc=3)
     opt.semantic_nc = 7

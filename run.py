@@ -80,6 +80,6 @@ with open('/content/inputs/test_pairs.txt', 'w') as file:
 
 # making predictions
 os.system(
-    "python /content/virtual_clothes_try_on_assistant/test.py --name output --dataset_dir /content/inputs --checkpoint_dir /content/virtual_clothes_try_on_assistant/checkpoints --save_dir /content/ --save_seg_dir /content/image_seg")
+    "python /content/virtual_clothes_try_on_assistant/test.py --name output --dataset_dir /content/inputs --checkpoint_dir /content/virtual_clothes_try_on_assistant/checkpoints --save_dir /content/")
 # os.system("rm -rf /content/inputs")
 os.system("rm -rf /content/output/.ipynb_checkpoints")
