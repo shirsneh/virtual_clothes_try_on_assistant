@@ -133,7 +133,12 @@ def test(opt, seg, gmm, alias):
             parse_div = torch.cat((parse, misalign_mask), dim=1)
             parse_div[:, 2:3] -= misalign_mask
             img_agnostic_resized = F.interpolate(img_agnostic, size=(1024, 768), mode='bilinear', align_corners=False)
-            output = alias(torch.cat((img_agnostic_resized, pose, warped_c), dim=1), parse, parse_div, misalign_mask)
+            pose_resized = F.interpolate(pose, size=(1024, 768), mode='bilinear', align_corners=False)
+            warped_c_resized = F.interpolate(warped_c, size=(1024, 768), mode='bilinear', align_corners=False)
+            parse_resized = F.interpolate(parse, size=(1024, 768), mode='bilinear', align_corners=False)
+            parse_div_resized = F.interpolate(parse_div, size=(1024, 768), mode='bilinear', align_corners=False)
+            misalign_mask_resized = F.interpolate(misalign_mask, size=(1024, 768), mode='bilinear', align_corners=False)
+            output = alias(torch.cat((img_agnostic_resized, pose_resized, warped_c_resized), dim=1), parse_resized, parse_div_resized, misalign_mask_resized)
 
             unpaired_names = []
             for img_name, c_name in zip(img_names, c_names):
