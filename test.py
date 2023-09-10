@@ -64,11 +64,13 @@ def test(opt, seg, gmm, alias):
         print("error in loading test_dataset")
     else:
         print("VITONDataset loaded")
+        print(test_dataset)
     test_loader = VITONDataLoader(opt, test_dataset)
-    if (test_loader is None or len(test_loader) == 0):
+    if (test_loader is None):
         print("error in loading test_loader")
     else:
         print("after VITONDataloader")
+        print(test_loader)
 
 
     with torch.no_grad():
