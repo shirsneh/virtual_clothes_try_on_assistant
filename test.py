@@ -111,6 +111,9 @@ def test(opt, seg, gmm, alias):
                 for label in labels[j][1]:
                     parse[:, j] += parse_old[:, label]
 
+            if not os.path.exists(opt.save_dir):
+                os.makedirs(opt.save_dir)
+
             # Save or display the segmentation mask images
             for i in range(parse_pred.size(0)):
                 parse_pred_np = parse_pred[i].cpu().numpy().astype(np.uint8)
