@@ -132,6 +132,7 @@ def test(opt, seg, gmm, alias):
             misalign_mask[misalign_mask < 0.0] = 0.0
             parse_div = torch.cat((parse, misalign_mask), dim=1)
             parse_div[:, 2:3] -= misalign_mask
+            print("parse: "+ parse.size() + "\nparse_div: "+parse_div.size() + "\nmisalign_mask: "+misalign_mask.size() + "\nimg_agnostic: "+img_agnostic.size()+"\nwarped_c: "+warped_c)
             output = alias(torch.cat((img_agnostic, pose, warped_c), dim=1), parse, parse_div, misalign_mask)
 
             unpaired_names = []
