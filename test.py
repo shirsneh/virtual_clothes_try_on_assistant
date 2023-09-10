@@ -152,11 +152,15 @@ def test(opt, seg, gmm, alias):
 
 # Save or display the segmentation mask images
 def print_results(opt, parse_pred):
+    # Create a directory to save segmentation mask images
+    if not os.path.exists(opt.save_seg_dir):
+        os.makedirs(opt.save_seg_dir)
+
     for i in range(parse_pred.size(0)):
         parse_pred_np = parse_pred[i].cpu().numpy().astype(np.uint8)
-        save_path = os.path.join(opt.save_seg_dir, f'seg_mask_{i}.png')
-        cv2.imwrite(save_path, parse_pred_np)
-        print(f'Saved segmentation mask {i} to {save_path}')
+        save_seg_path = os.path.join(opt.save_seg_dir, f'seg_mask_{i}.png')
+        cv2.imwrite(save_seg_path, parse_pred_np)
+        print(f'Saved segmentation mask {i} to {save_seg_path}')
 
 def main():
     opt = get_opt()
