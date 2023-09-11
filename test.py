@@ -89,19 +89,15 @@ def test(opt, seg, gmm, alias):
             cm_down = F.interpolate(cm, size=(256, 192), mode='bilinear')
             seg_input = torch.cat((cm_down, c_masked_down, parse_agnostic_down, pose_down, gen_noise(cm_down.size()).cuda()), dim=1)
 
-            # Assuming seg_input is a PyTorch tensor
-            print("Shape of seg_input:", seg_input.shape)
-            print("Data type of seg_input:", seg_input.dtype)
-            print("Minimum value in seg_input:", seg_input.min())
-            print("Maximum value in seg_input:", seg_input.max())
-
-            print("seg_input: ")
-            print(seg_input)
-            print("seg: ")
-            print(seg)
             parse_pred_down = seg(seg_input)
+            print("parse_pred_down: ")
+            print(parse_pred_down)
             parse_pred = gauss(up(parse_pred_down))
+            print("parse_pred: ")
+            print(parse_pred)
             parse_pred = parse_pred.argmax(dim=1)[:, None]
+            print("parse_pred: ")
+            print(parse_pred)
 
             parse_old = torch.zeros(parse_pred.size(0), 13, opt.load_height, opt.load_width, dtype=torch.float).cuda()
             parse_old.scatter_(1, parse_pred, 1.0)
@@ -129,7 +125,12 @@ def test(opt, seg, gmm, alias):
                 try:
                     print("saving segmentation mask image: " + str(j) + " at " + str(save_dir))
                     parse_pred_np = parse_pred[j].cpu().numpy().astype(np.uint8)
+                    print("parse_pred_np: ")
                     print(parse_pred_np)
+                    print("Shape:", parse_pred_np.shape)
+                    print("Data type:", parse_pred_np.dtype)
+                    print("Minimum value:", parse_pred_np.min())
+                    print("Maximum value:", parse_pred_np.max())
                     save_path = os.path.join(save_dir, f'seg_mask_{j}.jpg')
                     cv2.imwrite(save_path, parse_pred_np)
                     print("Saved segmentation mask image: " + str(j) + " at " + save_path)
