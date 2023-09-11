@@ -69,11 +69,11 @@ def test(opt, seg, gmm, alias):
         print("error in loading test_loader")
     else:
         print("after VITONDataloader")
-        print(test_loader)
 
 
     with torch.no_grad():
         for i, inputs in enumerate(test_loader.data_loader):
+            print(inputs)
             img_names = inputs['img_name']
             c_names = inputs['c_name']['unpaired']
 
