@@ -63,7 +63,6 @@ def test(opt, seg, gmm, alias):
         print("error in loading test_dataset")
     else:
         print("VITONDataset loaded")
-        print(test_dataset)
     test_loader = VITONDataLoader(opt, test_dataset)
     if (test_loader is None):
         print("error in loading test_loader")
@@ -90,14 +89,8 @@ def test(opt, seg, gmm, alias):
             seg_input = torch.cat((cm_down, c_masked_down, parse_agnostic_down, pose_down, gen_noise(cm_down.size()).cuda()), dim=1)
 
             parse_pred_down = seg(seg_input)
-            print("parse_pred_down: ")
-            print(parse_pred_down)
             parse_pred = gauss(up(parse_pred_down))
-            print("parse_pred: ")
-            print(parse_pred)
             parse_pred = parse_pred.argmax(dim=1)[:, None]
-            print("parse_pred: ")
-            print(parse_pred)
 
             parse_old = torch.zeros(parse_pred.size(0), 13, opt.load_height, opt.load_width, dtype=torch.float).cuda()
             parse_old.scatter_(1, parse_pred, 1.0)
