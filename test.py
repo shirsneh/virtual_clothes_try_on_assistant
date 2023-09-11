@@ -115,15 +115,15 @@ def test(opt, seg, gmm, alias):
                 os.makedirs(opt.save_dir)
 
             # Save or display the segmentation mask images
-            for i in range(parse_pred.size(0)):
+            for j in range(parse_pred.size(0)):
                 try:
-                    print("saving segmentation mask image: " + str(i) + " at " + str(opt.save_dir))
-                    parse_pred_np = parse_pred[i].cpu().numpy().astype(np.uint8)
-                    save_path = os.path.join(opt.save_dir, f'seg_mask_{i}.jpg')
+                    print("saving segmentation mask image: " + str(j) + " at " + str(opt.save_dir))
+                    parse_pred_np = parse_pred[j].cpu().numpy().astype(np.uint8)
+                    save_path = os.path.join(opt.save_dir, f'seg_mask_{j}.jpg')
                     cv2.imwrite(save_path, parse_pred_np)
-                    print("Saved segmentation mask image: " + str(i) + " at " + save_path)
+                    print("Saved segmentation mask image: " + str(j) + " at " + save_path)
                 except Exception as e:
-                    print("Error saving segmentation mask image: " + str(i) + " - " + str(e))
+                    print("Error saving segmentation mask image: " + str(j) + " - " + str(e))
 
             print("after Segmentation generation")
 
@@ -144,13 +144,8 @@ def test(opt, seg, gmm, alias):
             misalign_mask[misalign_mask < 0.0] = 0.0
             parse_div = torch.cat((parse, misalign_mask), dim=1)
             parse_div[:, 2:3] -= misalign_mask
-            img_agnostic_resized = F.interpolate(img_agnostic, size=(1152, 768), mode='bilinear', align_corners=False)
-            pose_resized = F.interpolate(pose, size=(1152, 768), mode='bilinear', align_corners=False)
-            warped_c_resized = F.interpolate(warped_c, size=(1152, 768), mode='bilinear', align_corners=False)
-            parse_resized = F.interpolate(parse, size=(1152, 768), mode='bilinear', align_corners=False)
-            parse_div_resized = F.interpolate(parse_div, size=(1152, 768), mode='bilinear', align_corners=False)
-            misalign_mask_resized = F.interpolate(misalign_mask, size=(1152, 768), mode='bilinear', align_corners=False)
-            output = alias(torch.cat((img_agnostic_resized, pose_resized, warped_c_resized), dim=1), parse_resized, parse_div_resized, misalign_mask_resized)
+
+            output = alias(torch.cat((img_agnostic, pose, warped_c), dim=1), parse, parse_div, misalign_mask)
 
             unpaired_names = []
             for img_name, c_name in zip(img_names, c_names):
