@@ -130,8 +130,8 @@ def test(opt, seg, gmm, alias):
             gmm_input = torch.cat((parse_cloth_gmm, pose_gmm, agnostic_gmm), dim=1)
 
             _, warped_grid = gmm(gmm_input, c_gmm)
-            warped_c = F.grid_sample(c, warped_grid, padding_mode='border')
-            warped_cm = F.grid_sample(cm, warped_grid, padding_mode='border')
+            warped_c = F.grid_sample(c, warped_grid, padding_mode='border', align_corners=True)
+            warped_cm = F.grid_sample(cm, warped_grid, padding_mode='border', align_corners=True)
             print("after Clothes Deformation")
 
             # Part 3. Try-on synthesis
