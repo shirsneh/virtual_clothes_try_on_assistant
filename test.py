@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import os
 import torch
+from matplotlib import pyplot as plt
 from torch import nn
 from torch.nn import functional as F
 import torchgeometry as tgm
@@ -119,11 +120,16 @@ def test(opt, seg, gmm, alias):
                     print("saving segmentation mask image: " + str(j) + " at " + str(save_dir))
                     parse_pred_np = parse_pred[j].cpu().numpy().astype(np.uint8)
                     save_path = os.path.join(save_dir, f'seg_mask_{j}.jpg')
-                    success = cv2.imwrite(save_path, parse_pred_np)
-                    if success:
-                        print("Saved segmentation mask image: " + str(j) + " at " + save_path)
-                    else:
-                        print("Failed to save.")
+                    plt.imshow(parse_pred_np, cmap='gray')
+                    plt.show()
+                    try:
+                        success = cv2.imwrite(save_path, parse_pred_np)
+                        if success:
+                            print("Saved segmentation mask image: " + str(j) + " at " + save_path)
+                        else:
+                            print("Failed to save.")
+                    except Exception as e:
+                        print(f"Error saving image: {e}")
 
                 except Exception as e:
                     print("Error saving segmentation mask image: " + str(j) + " - " + str(e))
