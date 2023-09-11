@@ -125,15 +125,13 @@ def test(opt, seg, gmm, alias):
                 try:
                     print("saving segmentation mask image: " + str(j) + " at " + str(save_dir))
                     parse_pred_np = parse_pred[j].cpu().numpy().astype(np.uint8)
-                    print("parse_pred_np: ")
-                    print(parse_pred_np)
-                    print("Shape:", parse_pred_np.shape)
-                    print("Data type:", parse_pred_np.dtype)
-                    print("Minimum value:", parse_pred_np.min())
-                    print("Maximum value:", parse_pred_np.max())
                     save_path = os.path.join(save_dir, f'seg_mask_{j}.jpg')
-                    cv2.imwrite(save_path, parse_pred_np)
-                    print("Saved segmentation mask image: " + str(j) + " at " + save_path)
+                    success = cv2.imwrite(save_path, parse_pred_np)
+                    if success:
+                        print("Saved segmentation mask image: " + str(j) + " at " + save_path)
+                    else:
+                        print("Failed to save.")
+
                 except Exception as e:
                     print("Error saving segmentation mask image: " + str(j) + " - " + str(e))
 
