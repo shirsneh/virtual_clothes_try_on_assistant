@@ -111,15 +111,16 @@ def test(opt, seg, gmm, alias):
                 for label in labels[j][1]:
                     parse[:, j] += parse_old[:, label]
 
-            if not os.path.exists(opt.save_dir):
-                os.makedirs(opt.save_dir)
+            save_dir = '/content/inputs/test/image_seg'
+            if not os.path.exists(save_dir):
+                os.makedirs(save_dir)
 
             # Save or display the segmentation mask images
             for j in range(parse_pred.size(0)):
                 try:
-                    print("saving segmentation mask image: " + str(j) + " at " + str(opt.save_dir))
+                    print("saving segmentation mask image: " + str(j) + " at " + str(save_dir))
                     parse_pred_np = parse_pred[j].cpu().numpy().astype(np.uint8)
-                    save_path = os.path.join(opt.save_dir, f'seg_mask_{j}.jpg')
+                    save_path = os.path.join(save_dir, f'seg_mask_{j}.jpg')
                     cv2.imwrite(save_path, parse_pred_np)
                     print("Saved segmentation mask image: " + str(j) + " at " + save_path)
                 except Exception as e:
