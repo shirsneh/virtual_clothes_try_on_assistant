@@ -26,7 +26,7 @@ def get_opt():
     parser.add_argument('--dataset_mode', type=str, default='test')
     parser.add_argument('--dataset_list', type=str, default='test_pairs.txt')
     parser.add_argument('--checkpoint_dir', type=str, default='/content/drive/MyDrive/VITON-HD/checkpoints')
-    parser.add_argument('--save_dir', type=str, default='/content/inputs/test/image_seg/')
+    parser.add_argument('--save_dir', type=str, default='/content/inputs/test/image_seg')
 
     parser.add_argument('--display_freq', type=int, default=1)
 
