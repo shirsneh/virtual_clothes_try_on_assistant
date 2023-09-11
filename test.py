@@ -89,6 +89,12 @@ def test(opt, seg, gmm, alias):
             cm_down = F.interpolate(cm, size=(256, 192), mode='bilinear')
             seg_input = torch.cat((cm_down, c_masked_down, parse_agnostic_down, pose_down, gen_noise(cm_down.size()).cuda()), dim=1)
 
+            # Assuming seg_input is a PyTorch tensor
+            print("Shape of seg_input:", seg_input.shape)
+            print("Data type of seg_input:", seg_input.dtype)
+            print("Minimum value in seg_input:", seg_input.min())
+            print("Maximum value in seg_input:", seg_input.max())
+
             print("seg_input: ")
             print(seg_input)
             print("seg: ")
