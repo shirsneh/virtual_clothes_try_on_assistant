@@ -144,7 +144,8 @@ def test(opt, seg, gmm, alias):
             misalign_mask[misalign_mask < 0.0] = 0.0
             parse_div = torch.cat((parse, misalign_mask), dim=1)
             parse_div[:, 2:3] -= misalign_mask
-
+            # Resize img_agnostic to [1, 3, 1024, 768]
+            img_agnostic = F.interpolate(img_agnostic, size=(1024, 768), mode='bilinear', align_corners=False)
             output = alias(torch.cat((img_agnostic, pose, warped_c), dim=1), parse, parse_div, misalign_mask)
 
             unpaired_names = []
