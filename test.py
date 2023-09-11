@@ -120,6 +120,7 @@ def test(opt, seg, gmm, alias):
                 try:
                     print("saving segmentation mask image: " + str(j) + " at " + str(save_dir))
                     parse_pred_np = parse_pred[j].cpu().numpy().astype(np.uint8)
+                    print(parse_pred_np)
                     save_path = os.path.join(save_dir, f'seg_mask_{j}.jpg')
                     cv2.imwrite(save_path, parse_pred_np)
                     print("Saved segmentation mask image: " + str(j) + " at " + save_path)
