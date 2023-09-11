@@ -18,7 +18,7 @@ def submit():
     model = request.files['model']
 
     ## replace the url from the ngrok url provided on the notebook on server.
-    url = " http://0d47-34-29-164-52.ngrok-free.app/api/transform"
+    url = " http://56d4-34-139-103-14.ngrok-free.app/api/transform"
     print("sending")
     response = requests.post(url=url, files={"cloth": cloth.stream, "model": model.stream})
     op = Image.open(BytesIO(response.content))
