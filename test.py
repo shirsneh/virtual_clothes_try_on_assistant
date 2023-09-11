@@ -73,7 +73,6 @@ def test(opt, seg, gmm, alias):
 
     with torch.no_grad():
         for i, inputs in enumerate(test_loader.data_loader):
-            print(inputs)
             img_names = inputs['img_name']
             c_names = inputs['c_name']['unpaired']
 
@@ -90,6 +89,10 @@ def test(opt, seg, gmm, alias):
             cm_down = F.interpolate(cm, size=(256, 192), mode='bilinear')
             seg_input = torch.cat((cm_down, c_masked_down, parse_agnostic_down, pose_down, gen_noise(cm_down.size()).cuda()), dim=1)
 
+            print("seg_input: ")
+            print(seg_input)
+            print("seg: ")
+            print(seg)
             parse_pred_down = seg(seg_input)
             parse_pred = gauss(up(parse_pred_down))
             parse_pred = parse_pred.argmax(dim=1)[:, None]
