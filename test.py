@@ -3,7 +3,6 @@ import cv2
 import numpy as np
 import os
 import torch
-from matplotlib import pyplot as plt
 from torch import nn
 from torch.nn import functional as F
 import torchgeometry as tgm
@@ -119,10 +118,20 @@ def test(opt, seg, gmm, alias):
                 try:
                     print("saving segmentation mask image: " + str(j) + " at " + str(save_dir))
                     parse_pred_np = parse_pred[j].cpu().numpy().astype(np.uint8)
+                    print("parse_pred_np in grayscale: ")
+                    print(parse_pred_np)
+                    print("Shape:", parse_pred_np.shape)
+                    print("Data type:", parse_pred_np.dtype)
+                    print("Minimum value:", parse_pred_np.min())
+                    print("Maximum value:", parse_pred_np.max())
                     parse_pred_np = cv2.cvtColor(parse_pred_np, cv2.COLOR_GRAY2RGB)
+                    print("parse_pred_np in RGB: ")
+                    print(parse_pred_np)
+                    print("Shape:", parse_pred_np.shape)
+                    print("Data type:", parse_pred_np.dtype)
+                    print("Minimum value:", parse_pred_np.min())
+                    print("Maximum value:", parse_pred_np.max())
                     save_path = os.path.join(save_dir, f'seg_mask_{j}.jpg')
-                    plt.imshow(parse_pred_np, cmap='gray')
-                    plt.show()
                     try:
                         success = cv2.imwrite(save_path, parse_pred_np)
                         if success:
