@@ -119,6 +119,7 @@ def test(opt, seg, gmm, alias):
                 try:
                     print("saving segmentation mask image: " + str(j) + " at " + str(save_dir))
                     parse_pred_np = parse_pred[j].cpu().numpy().astype(np.uint8)
+                    parse_pred_np = cv2.cvtColor(parse_pred_np, cv2.COLOR_GRAY2RGB)
                     save_path = os.path.join(save_dir, f'seg_mask_{j}.jpg')
                     plt.imshow(parse_pred_np, cmap='gray')
                     plt.show()
