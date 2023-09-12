@@ -125,11 +125,12 @@ def test(opt, seg, gmm, alias):
                     print("Minimum value:", parse_pred_np.min())
                     print("Maximum value:", parse_pred_np.max())
 
+                    normalized_mask = ((parse_pred_np[0] - parse_pred_np[0].min()) / (parse_pred_np[0].max() - parse_pred_np[0].min()) * 255).astype(np.uint8)
                     # Convert grayscale mask to RGB
                     parse_pred_rgb = np.zeros((1024, 768, 3), dtype=np.uint8)
-                    parse_pred_rgb[..., 0] = parse_pred_np[0]  # Red channel
-                    parse_pred_rgb[..., 1] = parse_pred_np[0]  # Green channel
-                    parse_pred_rgb[..., 2] = parse_pred_np[0]  # Blue channel
+                    parse_pred_rgb[..., 0] = normalized_mask  # Red channel
+                    parse_pred_rgb[..., 1] = normalized_mask  # Green channel
+                    parse_pred_rgb[..., 2] = normalized_mask  # Blue channel
 
                     print("parse_pred_rgb: ")
                     print(parse_pred_rgb)
