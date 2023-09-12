@@ -124,16 +124,22 @@ def test(opt, seg, gmm, alias):
                     print("Data type:", parse_pred_np.dtype)
                     print("Minimum value:", parse_pred_np.min())
                     print("Maximum value:", parse_pred_np.max())
-                    parse_pred_np = cv2.cvtColor(parse_pred_np, cv2.COLOR_GRAY2RGB)
-                    print("parse_pred_np in RGB: ")
-                    print(parse_pred_np)
-                    print("Shape:", parse_pred_np.shape)
-                    print("Data type:", parse_pred_np.dtype)
-                    print("Minimum value:", parse_pred_np.min())
-                    print("Maximum value:", parse_pred_np.max())
+
+                    # Convert grayscale mask to RGB
+                    parse_pred_rgb = np.zeros((1024, 768, 3), dtype=np.uint8)
+                    parse_pred_rgb[..., 0] = parse_pred_np[0]  # Red channel
+                    parse_pred_rgb[..., 1] = parse_pred_np[0]  # Green channel
+                    parse_pred_rgb[..., 2] = parse_pred_np[0]  # Blue channel
+
+                    print("parse_pred_rgb: ")
+                    print(parse_pred_rgb)
+                    print("Shape:", parse_pred_rgb.shape)
+                    print("Data type:", parse_pred_rgb.dtype)
+                    print("Minimum value:", parse_pred_rgb.min())
+                    print("Maximum value:", parse_pred_rgb.max())
                     save_path = os.path.join(save_dir, f'seg_mask_{j}.jpg')
                     try:
-                        success = cv2.imwrite(save_path, parse_pred_np)
+                        success = cv2.imwrite(save_path, parse_pred_rgb)
                         if success:
                             print("Saved segmentation mask image: " + str(j) + " at " + save_path)
                         else:
