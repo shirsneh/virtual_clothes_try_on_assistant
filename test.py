@@ -118,12 +118,6 @@ def test(opt, seg, gmm, alias):
                 try:
                     print("saving segmentation mask image: " + str(j) + " at " + str(save_dir))
                     parse_pred_np = parse_pred[j].cpu().numpy().astype(np.uint8)
-                    print("parse_pred_np in grayscale: ")
-                    print(parse_pred_np)
-                    print("Shape:", parse_pred_np.shape)
-                    print("Data type:", parse_pred_np.dtype)
-                    print("Minimum value:", parse_pred_np.min())
-                    print("Maximum value:", parse_pred_np.max())
 
                     normalized_mask = ((parse_pred_np[0] - parse_pred_np[0].min()) / (parse_pred_np[0].max() - parse_pred_np[0].min()) * 255).astype(np.uint8)
                     # Convert grayscale mask to RGB
@@ -131,13 +125,6 @@ def test(opt, seg, gmm, alias):
                     parse_pred_rgb[..., 0] = normalized_mask  # Red channel
                     parse_pred_rgb[..., 1] = normalized_mask  # Green channel
                     parse_pred_rgb[..., 2] = normalized_mask  # Blue channel
-
-                    print("parse_pred_rgb: ")
-                    print(parse_pred_rgb)
-                    print("Shape:", parse_pred_rgb.shape)
-                    print("Data type:", parse_pred_rgb.dtype)
-                    print("Minimum value:", parse_pred_rgb.min())
-                    print("Maximum value:", parse_pred_rgb.max())
                     save_path = os.path.join(save_dir, f'seg_mask_{j}.jpg')
                     try:
                         success = cv2.imwrite(save_path, parse_pred_rgb)
@@ -170,6 +157,16 @@ def test(opt, seg, gmm, alias):
             misalign_mask[misalign_mask < 0.0] = 0.0
             parse_div = torch.cat((parse, misalign_mask), dim=1)
             parse_div[:, 2:3] -= misalign_mask
+
+            try:
+                success = cv2.imwrite(save_path, parse_div)
+                if success:
+                    print("Saved parse div image: " + str(j) + " at " + save_path)
+                else:
+                    print("Failed to save.")
+            except Exception as e:
+                print(f"Error saving image: {e}")
+
             img_agnostic = F.interpolate(img_agnostic, size=(1024, 768), mode='bilinear', align_corners=False)
             pose = F.interpolate(pose, size=(1024, 768), mode='bilinear', align_corners=False)
             output = alias(torch.cat((img_agnostic, pose, warped_c), dim=1), parse, parse_div, misalign_mask)
